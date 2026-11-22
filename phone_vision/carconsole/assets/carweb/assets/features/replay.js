@@ -1,0 +1,9 @@
+import {$,text,number} from '../core/dom.js';
+export function indexBefore(rows,time){let lo=0,hi=rows.length;while(lo<hi){const m=(lo+hi)>>1;if(rows[m].t<=time)lo=m+1;else hi=m;}return Math.max(0,lo-1);}
+export function createReplay(api){let rows=[],playing=false,start=0,origin=0;
+function show(t){if(!rows.length)return;const sample=rows[indexBefore(rows,t)],s=sample.state,u=s.ultrasonic;text('replayTime',number(sample.t,2)+' 秒');text('replayStats','原测距 '+(s.range_valid?number(s.distance_mm/10)+' cm':'无有效数据')+' · 超声 '+(u&&u.valid?number(u.distance_mm/10)+' cm':'无有效数据')+'\n主控运行 '+s.uptime_s+' 秒 · 预警 '+number(s.warning_mm/10)+' cm\n本段为主控通信记录，尚未录入相机视频。仅显示最近1200条状态摘要，原始日志仍完整保留。');}
+$('loadReplay').addEventListener('click',async()=>{const id=$('recordList').value;if(!id)return;playing=false;try{const d=await api.get('record/'+encodeURIComponent(id)+'/data',7000);rows=d.samples||[];if(!rows.length)throw Error('这段没有完整状态摘要，请保留原始记录排查');$('replayView').hidden=false;$('replayImage').hidden=true;$('replayTimeline').min=rows[0].t;$('replayTimeline').max=rows[rows.length-1].t;$('replayTimeline').value=rows[0].t;show(rows[0].t);}catch(e){text('recordMessage',e.message);}});
+$('replayTimeline').addEventListener('input',()=>{playing=false;show(Number($('replayTimeline').value));});
+$('playReplay').addEventListener('click',()=>{if(!rows.length)return;start=Number($('replayTimeline').value);if(start>=rows[rows.length-1].t)start=rows[0].t;origin=performance.now();playing=true;});$('pauseReplay').addEventListener('click',()=>playing=false);
+const timer=setInterval(()=>{if(!playing)return;const t=Math.min(rows[rows.length-1].t,start+(performance.now()-origin)/1000);$('replayTimeline').value=t;show(t);if(t>=rows[rows.length-1].t)playing=false;},100);return{pause(){playing=false;},destroy(){playing=false;clearInterval(timer);}};
+}

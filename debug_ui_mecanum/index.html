@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#111b1c">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23244238'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-size='44' fill='%23a9e4c3'%3E知%3C/text%3E%3C/svg%3E">
+  <title>知行回路 · 调试台</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/console.css">
+  <link rel="stylesheet" href="assets/sensors.css">
+</head>
+<body>
+  <header class="app-header">
+    <a class="brand" href="#live" aria-label="知行回路首页"><span class="brand-icon">知</span><span><strong>知行回路</strong><small>ROVER CONTROL STATION</small></span></a>
+    <div class="header-status"><span id="connection" class="badge">等待连接</span><span id="viewLabel" class="view-label">自动适配</span></div>
+    <button type="button" data-stop class="button danger header-stop"><span class="stop-square" aria-hidden="true"></span>全部停止</button>
+  </header>
+  <main>
+    <div id="demoNotice" class="notice demo" hidden>模拟预览 · 当前画面、状态与操控均为模拟</div>
+    <div id="notice" class="notice" role="status" aria-live="polite">正在读取主控状态…</div>
+    <nav class="tabs" aria-label="调试功能">
+      <button type="button" data-tab="live" aria-selected="true"><span class="tab-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M8 10h3m-1.5-1.5v3M16 11h.01M18 14h.01"/></svg></span>画面与控制</button>
+      <button type="button" data-tab="telemetry" aria-selected="false"><span class="tab-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18V11m5 7V6m6 12v-8m5 8V3"/></svg></span>运行状态</button>
+      <button type="button" data-tab="records" aria-selected="false"><span class="tab-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="m10 8 6 4-6 4Z"/></svg></span>记录回放</button>
+    </nav>
+    <section data-panel="live" aria-label="画面与控制">
+      <div class="workspace">
+        <div id="controlDock" class="control-dock">
+          <div class="control-mode" role="group" aria-label="操控模式"><button type="button" data-control-mode="drive" aria-pressed="true">行驶</button><button type="button" data-control-mode="gimbal" aria-pressed="false">云台</button><span>切换操控，画面常驻</span></div>
+        <details class="card control-card drive-card fold-card" id="driveCard" open>
+          <summary class="module-summary"><div class="panel-name"><small>MOTION / 01</small><h2>四驱行驶</h2></div><span id="driveState" class="badge">等待主控</span><span class="fold-chevron" aria-hidden="true"></span></summary>
+          <div class="module-body">
+            <div class="drive-primary"><div id="driveJoystick" class="stick-pad drive-stick" role="group" aria-label="四驱行驶摇杆，按住行驶松手停止" aria-disabled="true" tabindex="0"><span class="stick-label north">前进</span><span class="stick-label south">后退</span><span id="driveWestLabel" class="stick-label west">左转</span><span id="driveEastLabel" class="stick-label east">右转</span><div id="driveThumb" class="stick-thumb"></div></div><p id="driveTarget" class="muted">前后 0 / 转向 0</p><p class="hint" id="driveInputHint">按住行驶，松手归零</p><div class="button-row" data-mecanum-only hidden><button class="button secondary" data-drive-direction="rotateLeft" disabled>原地左转</button><button class="button secondary" data-drive-direction="rotateRight" disabled>原地右转</button></div></div>
+            <div class="drive-instruments"><div><span>前方距离</span><strong data-metric="distance">—</strong><small>cm</small></div><div><span>驱动电压</span><strong data-metric="voltage">—</strong><small>V</small></div></div>
+            <details id="driveTools" class="fold-tools"><summary><span class="drawer-icon" aria-hidden="true">＋</span>行驶设置与控制<span class="fold-hint">展开</span></summary><div class="fold-content">
+              <p class="hint">手动拍摄遥控 · 测距只显示和提示，不拦截行驶。</p>
+              <div class="button-row"><button id="startDrive" class="button" disabled>开启手动拍摄遥控</button><button id="stopDrive" class="button danger">停止四驱</button></div>
+              <div class="drive-settings"><label>速度档位 <output id="driveLimitValue">20%</output><input id="driveLimit" type="range" min="10" max="100" step="5" value="20"></label><div class="drive-arrows"><button class="button secondary" data-drive-direction="forward" disabled>前进</button><button class="button secondary" data-drive-direction="left" disabled>原地左转</button><button class="button secondary" data-drive-direction="right" disabled>原地右转</button><button class="button secondary" data-drive-direction="back" disabled>后退</button><button class="button secondary" data-drive-direction="forwardLeft" disabled>前进左拐</button><button class="button secondary" data-drive-direction="forwardRight" disabled>前进右拐</button><button class="button secondary" data-drive-direction="backLeft" disabled>倒车左转</button><button class="button secondary" data-drive-direction="backRight" disabled>倒车右转</button></div></div>
+              <div id="driveFeedback" class="feedback" role="status">等待手动拍摄固件和主控状态。</div>
+              <p id="driveSpeedHint" class="hint">速度控制v2：四轮独立起转补偿与反馈保持。</p>
+              <div class="drive-instruments"><div><span>左前速度目标</span><strong id="driveSpeedLeft">—</strong></div><div><span>右前速度目标</span><strong id="driveSpeedRight">—</strong></div></div>
+              <div class="drive-pwm-readout"><span>M1 <b id="driveOutputM1">—</b></span><span>M2 <b id="driveOutputM2">—</b></span><span>M3 <b id="driveOutputM3">—</b></span><span>M4 <b id="driveOutputM4">—</b></span></div><p id="driveControllerFault" class="hint">等待控制器反馈</p>
+              <details class="ground-status"><summary>手动拍摄模式说明</summary><p id="groundDriveReason" class="hint">已知驱动控制线断开后仍会持续转动；地面测试需要独立切断电机电源或驱动端失联停车。</p></details>
+            </div></details>
+          </div>
+        </details>
+        <details class="card control-card fold-card" id="gimbalCard" hidden>
+          <summary class="module-summary"><div class="panel-name"><small>GIMBAL / 02</small><h2>双轴云台</h2></div><span id="gimbalState" class="badge">等待主控</span><span class="fold-chevron" aria-hidden="true"></span></summary>
+          <div class="module-body">
+            <div class="button-row gimbal-actions"><button id="startControl" class="button" disabled>开启云台控制</button><button id="centerControl" class="button secondary" disabled>回到中间</button></div>
+            <div class="gimbal-primary"><div id="joystick" class="stick-pad" role="group" aria-label="二维云台摇杆" aria-disabled="true" tabindex="0"><span class="stick-label up">上</span><span class="stick-label down">下</span><span class="stick-label left">左</span><span class="stick-label right">右</span><div id="stickThumb" class="stick-thumb"></div></div><div class="gimbal-readout"><span>水平 <output id="yawValue">0</output></span><span>俯仰 <output id="pitchValue">0</output></span></div><p id="stickNote" class="hint">等待开启控制</p></div>
+            <details id="gimbalTools" class="fold-tools"><summary><span class="drawer-icon" aria-hidden="true">＋</span>云台参数与微调<span class="fold-hint">展开</span></summary><div class="fold-content">
+              <div class="stick-options"><label>可用幅度<select id="amplitude"><option value="40">40% · 小幅</option><option value="60" selected>60% · 默认</option><option value="80">80% · 逐步试探</option><option value="100">100% · 程序上限</option></select></label><p class="hint">拖动同时调整两轴，松手保持。方向键每次微调 5 单位。</p></div>
+              <div class="axis"><label for="yaw">水平指令</label><input id="yaw" type="range" min="-60" max="60" value="0" disabled><div class="axis-labels"><span data-limit-low>−60</span><span>中间</span><span data-limit-high>+60</span></div></div>
+              <div class="axis"><label for="pitch">俯仰指令</label><input id="pitch" type="range" min="-60" max="60" value="0" disabled><div class="axis-labels"><span data-limit-low>−60</span><span>中间</span><span data-limit-high>+60</span></div></div>
+              <div class="nudge"><button class="button secondary" data-axis="yaw" data-step="-5" disabled>左 −5</button><button class="button secondary" data-axis="yaw" data-step="5" disabled>右 +5</button><button class="button secondary" data-axis="pitch" data-step="-5" disabled>上 −5</button><button class="button secondary" data-axis="pitch" data-step="5" disabled>下 +5</button></div>
+              <div id="gimbalFeedback" class="feedback" role="status">页面打开不会自动动作，开启后才接受调整。</div><div id="controlEvent" class="hint"></div>
+              <p class="hint">数值是位置指令，不是实测角度；机械极限待校准。停止脉冲不切断舵机电源。</p>
+            </div></details>
+          </div>
+        </details>
+        </div>
+        <section class="card camera-card" id="cameraCard">
+          <div class="card-heading"><div class="panel-name"><small>CAMERA / 02</small><h1>外接摄像头</h1></div><span id="cameraState" class="badge">画面未开启</span></div>
+          <div class="camera-view"><img id="cameraImage" alt="外接摄像头实时画面" hidden><div id="cameraPlaceholder" class="placeholder"><span class="camera-mark">◎</span><strong>等待外接画面</strong><span>开启后查看云台上的摄像头</span></div><div class="video-topline"><span class="image-tag"><i></i>原始画面</span><span id="cameraRecordState" class="video-record" hidden></span><span id="cameraFrameLabel" class="frame-label">NO SIGNAL</span></div><div class="video-bottomline"><span id="cameraLiveMeta">等待视频源</span><span>完整视野</span></div><span class="video-corner top-left" aria-hidden="true"></span><span class="video-corner bottom-right" aria-hidden="true"></span></div>
+          <details id="cameraTools" class="fold-tools"><summary><span class="drawer-icon" aria-hidden="true">＋</span>相机设置与拍摄<span class="fold-hint">展开</span></summary><div class="fold-content">
+          <div id="cameraMeta" class="muted camera-meta">目标帧率与实际预览帧率分别显示</div>
+          <div class="camera-settings"><label>清晰度<select id="cameraResolution"><option value="160x120">160×120</option><option value="320x240">320×240 · 流畅</option><option value="640x480" selected>640×480 · 标准</option><option value="1280x720">1280×720 · 720P</option><option value="1920x1080">1920×1080 · 1080P</option></select></label><label>目标帧率<select id="cameraFps"><option value="5">5 帧/秒</option><option value="10">10 帧/秒</option><option value="15" selected>15 帧/秒</option><option value="20">20 帧/秒</option><option value="30">30 帧/秒</option></select></label></div>
+          <div class="button-row"><button id="startCamera" class="button">开启画面</button><button id="stopCamera" class="button secondary" disabled>关闭画面</button></div>
+          <div class="record-strip"><span id="liveRecordBadge" class="muted">未录像</span><button data-record-start class="button secondary compact" disabled>开始录像</button><button data-record-stop class="button secondary compact" disabled>停止并保存</button></div>
+          <div class="photo-strip"><button id="takePhoto" class="button secondary compact" disabled>拍照</button><a id="photoDownload" class="button secondary compact" hidden download>下载照片</a><span id="photoMessage" class="hint" role="status">照片保存在当前采集端，可下载到查看设备。</span></div>
+          <p class="hint">画质与帧率选择后自动应用；录像中切换会保存旧段并续录。</p>
+          </div></details>
+        </section>
+      </div>
+      <section class="sensor-section" aria-label="循迹与车身姿态">
+      <div class="sensor-section-heading"><div><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 10h3l2-5 4 10 2-5h5"/></svg><h2>实时感知</h2></div><span>循迹与车身姿态 · 主控实时回传</span></div>
+      <div class="sensor-deck">
+      <section class="card sensor-card line-card" id="lineCard" data-status="offline">
+        <div class="sensor-header"><div class="sensor-title"><span class="sensor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17V7m5 10V7m6 10V7m5 10V7M3 20h18M3 4h18"/><circle cx="9" cy="12" r="2"/></svg></span><div><h2>八路循迹</h2><small>黑线位置与探头响应</small></div></div><span id="lineState" class="sensor-status">等待数据</span></div>
+        <div class="line-channels" aria-label="X1至X8探头状态">
+          <div data-line-channel="1"><b>X1</b><span class="line-well"><i data-line-fill></i></span><span data-line-color>—</span><small data-line-value>—</small></div>
+          <div data-line-channel="2"><b>X2</b><span class="line-well"><i data-line-fill></i></span><span data-line-color>—</span><small data-line-value>—</small></div>
+          <div data-line-channel="3"><b>X3</b><span class="line-well"><i data-line-fill></i></span><span data-line-color>—</span><small data-line-value>—</small></div>
+          <div data-line-channel="4"><b>X4</b><span class="line-well"><i data-line-fill></i></span><span data-line-color>—</span><small data-line-value>—</small></div>
+          <div data-line-channel="5"><b>X5</b><span class="line-well"><i data-line-fill></i></span><span data-line-color>—</span><small data-line-value>—</small></div>
+          <div data-line-channel="6"><b>X6</b><span class="line-well"><i data-line-fill></i></span><span data-line-color>—</span><small data-line-value>—</small></div>
+          <div data-line-channel="7"><b>X7</b><span class="line-well"><i data-line-fill></i></span><span data-line-color>—</span><small data-line-value>—</small></div>
+          <div data-line-channel="8"><b>X8</b><span class="line-well"><i data-line-fill></i></span><span data-line-color>—</span><small data-line-value>—</small></div>
+        </div>
+        <div class="line-axis"><span>X1端</span><div class="line-track"><i id="lineMarker" hidden></i></div><span>X8端</span></div>
+        <div class="line-summary"><div><small class="line-readout-label">黑线位置</small><p id="linePosition" class="hint" role="status">等待新鲜数据</p></div><div class="line-offset"><strong id="lineOffset">—</strong><span>% 偏移</span></div></div>
+        <div class="line-legend"><i aria-hidden="true"></i><span>高亮表示检测到黑线</span><span id="lineCount" class="line-count">— / 8 路</span></div>
+      </section>
+      <section class="card sensor-card imu-card" id="imuCard" data-status="offline" hidden>
+        <div class="sensor-header"><div class="sensor-title"><span class="sensor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 14 3-5h10l3 5v4H4zm3 4v2m10-2v2M8 12h8M3 5h18"/></svg></span><div><h2>车身姿态</h2><small>前后与左右相对倾角</small></div></div><span id="imuState" class="sensor-status">等待数据</span></div>
+        <div class="imu-grid">
+          <div class="imu-instrument"><span>前后倾斜</span><strong id="imuFrontAngle">—</strong><div class="imu-level"><i id="imuFrontBar" hidden></i></div><div class="imu-ends"><span>车尾</span><span>车头</span></div><output id="imuFrontDirection">等待新鲜数据</output></div>
+          <div class="imu-instrument"><span>左右倾斜</span><strong id="imuLeftAngle">—</strong><div class="imu-level"><i id="imuLeftBar" hidden></i></div><div class="imu-ends"><span>车右</span><span>车左</span></div><output id="imuLeftDirection">等待新鲜数据</output></div>
+        </div>
+        <p class="sensor-footnote">相对已保存的水平参考 · 当前为兼容测试数据</p>
+        <p id="imuAge" class="hint">等待新鲜数据</p>
+        <div id="imuObserver" class="imu-observer" hidden>
+          <div class="imu-observer-values"><div><span>颠簸 RMS</span><strong id="imuRms">—</strong></div><div><span>颠簸峰值</span><strong id="imuPeak">—</strong></div><div><span>近 2 秒转角 °</span><strong id="imuTurn">—</strong></div></div>
+          <p id="imuMotion" role="status">等待板端算法</p><small id="imuEvents">事件计数 —</small><small id="imuWindow">约 2 秒观察窗</small>
+        </div>
+        <details class="imu-details"><summary>传感器状态</summary><p id="imuDetail">等待传感器状态</p></details>
+      </section>
+      </div>
+      </section>
+      <details id="vehicleOverview" class="card fold-card vehicle-overview"><summary class="module-summary"><h2>车辆状态概览</h2><span class="fold-hint">展开查看</span><span class="fold-chevron" aria-hidden="true"></span></summary><div class="module-body">
+      <div class="quick-stats">
+        <div><span>原测距</span><strong data-metric="distance">—</strong><small>cm</small></div>
+        <div><span>超声波</span><strong data-metric="ultra">—</strong><small>cm</small></div>
+        <div><span>电池电压</span><strong data-metric="voltage">—</strong><small>V</small></div>
+        <div><span>车辆许可</span><strong id="drivePermission" class="locked">未开启</strong><small>手动遥控</small></div>
+      </div>
+      </div></details>
+    </section>
+    <section data-panel="telemetry" aria-label="运行状态" hidden>
+      <div class="section-heading"><div><span class="eyebrow">TELEMETRY</span><h2>主控回传状态</h2></div><span id="fresh" class="muted">等待数据</span></div>
+      <div class="metric-grid">
+        <section class="card metric"><span>原测距模块</span><div><strong data-metric="distance">—</strong><small>cm</small></div><p id="guard" class="muted">等待有效测距</p></section>
+        <section class="card metric"><span>超声波</span><div><strong data-metric="ultra">—</strong><small>cm</small></div><p id="ultraNote" class="muted">等待有效测距</p></section>
+        <section class="card metric"><span>电池电压</span><div><strong data-metric="voltage">—</strong><small>V</small></div><p class="muted">驱动板回报值</p></section>
+        <section class="card metric"><span>预警距离</span><div><strong data-metric="warning">—</strong><small>cm</small></div><p id="sound" class="muted">声音状态未知</p></section>
+      </div>
+      <div class="telemetry-layout"><section class="card"><div class="card-heading"><h2>距离趋势</h2><span class="muted">最近 60 次更新</span></div><canvas id="plot" aria-label="原测距距离趋势" role="img"></canvas><p id="plotNote" class="hint">等待有效距离</p></section><section class="card"><div class="card-heading"><h2>四轮反馈</h2><span class="muted">驱动回报单位</span></div><div class="wheels"><div><span>M1 · 左前</span><strong id="m1">—</strong></div><div><span>M3 · 右前</span><strong id="m3">—</strong></div><div><span>M2 · 左后</span><strong id="m2">—</strong></div><div><span>M4 · 右后</span><strong id="m4">—</strong></div></div><p class="hint">驱动板回报轮速；整车地面车速仍需独立标定。</p></section></div>
+      <section class="card module-card"><h2>模块与反馈</h2><dl class="module-grid"><div><dt>运行时间</dt><dd id="uptime">—</dd></div><div><dt>电机反馈</dt><dd id="driver">—</dd></div><div><dt>主控锁存故障</dt><dd id="fault">—</dd></div><div><dt>驱动串口</dt><dd id="uart">—</dd></div></dl><p class="hint">CH32 审核最终运动许可；手动拍摄模式的测距仅提示，指令失联和驱动故障仍停车。</p></section>
+    </section>
+    <section data-panel="records" aria-label="记录回放" hidden>
+      <div class="section-heading"><div><span class="eyebrow">RECORD & REPLAY</span><h2>记录与运行回放</h2></div><span id="recordBadge" class="badge">未记录</span></div>
+      <div class="replay-layout"><section class="card"><h2>保存运行记录</h2><p class="muted">画面与可用车况按采集端接收时间对齐，保留丢帧与中断标记。</p><div id="recordInfo" class="record-info">等待开始</div><div class="button-row"><button data-record-start class="button" disabled>开始录像</button><button data-record-stop class="button secondary" disabled>停止并保存</button></div><p class="hint">每段最多 10 分钟或 512 MB 原始帧。视频和状态保存在小安卓；停止保存后可下载 MP4，编码与丢帧情况另行记录。</p><div id="recordMessage" class="feedback" role="status"></div></section><section class="card"><h2>已保存记录</h2><label>记录列表<select id="recordList"><option value="">暂无记录</option></select></label><div class="button-row"><button id="refreshRecords" class="button secondary">刷新记录</button><button id="loadReplay" class="button">打开回放</button><a id="videoDownload" class="button secondary" hidden download>下载 MP4</a></div><p class="hint">回放仅查看历史，播放和拖动时间轴不会向实物发控制指令。</p></section></div>
+      <section id="replayView" class="card replay-card" hidden><div class="card-heading"><h2>历史回放</h2><span class="badge">历史数据</span></div><img id="replayImage" class="replay-image" alt="历史记录画面" hidden><label for="replayTimeline">回放时间 <output id="replayTime">0.00 秒</output></label><input id="replayTimeline" type="range" min="0" max="1" step="0.01" value="0"><div class="button-row"><button id="playReplay" class="button">播放</button><button id="pauseReplay" class="button secondary">暂停</button></div><div id="replayStats" class="feedback">等待回放</div></section>
+    </section>
+    <details id="diagnosticLogs" class="card diagnostics"><summary>诊断日志 <span>排查时展开</span></summary><p id="rawLogInfo" class="muted">等待服务日志状态</p><dl class="diagnostic-fields"><div><dt>记录会话</dt><dd id="diagnosticId">—</dd></div><div><dt>事件 / 分段</dt><dd id="diagnosticCounts">—</dd></div><div><dt>最近通信错误</dt><dd id="diagnosticError">—</dd></div><div><dt>通信方式</dt><dd id="transportMode">HTTP · 轮询</dd></div><div><dt>网络往返（非主控动作延迟）</dt><dd id="networkRtt">—</dd></div><div><dt>主控数据年龄</dt><dd id="sourceAge">—</dd></div></dl><p class="hint">原始发送、接收字节与解析显示分开保存。发送成功不代表主控已执行，需检查回执。网络往返测量不含CH32处理、采样周期或机械动作时间。</p></details>
+    <footer>CH32 主控 · 电脑 / 手机共用功能模块 <a href="desktop">电脑版</a><a href="mobile">手机版</a><a href="./">自动适配</a></footer>
+  </main>
+  <div class="mobile-stop"><button data-stop class="button danger">全部停止</button><span>四驱 + 云台<br>停止需主控回执</span></div>
+  <script type="module" src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+{
+  "upstream_tag": "20260527.f1ac75e",
+  "cache": "C:\\Users\\panyuanhao\\.cache\\zhixing-android-tools",
+  "inputs": [
+    {
+      "name": "android-ndk-r29-windows.zip",
+      "url": "https://dl.google.com/android/repository/android-ndk-r29-windows.zip",
+      "digest": "ab3bb30fbb9e6903666d60c55d11e78b04e07472",
+      "extracted": "C:\\Users\\panyuanhao\\.cache\\zhixing-android-tools\\android-ndk-r29-windows"
+    },
+    {
+      "name": "build-tools_r35_windows.zip",
+      "url": "https://dl.google.com/android/repository/build-tools_r35_windows.zip",
+      "digest": "af059bb67cf7786f45ee0db85e2d24985df1b4b6",
+      "extracted": "C:\\Users\\panyuanhao\\.cache\\zhixing-android-tools\\build-tools_r35_windows"
+    },
+    {
+      "name": "cmake-3.31.5-windows.zip",
+      "url": "https://dl.google.com/android/repository/cmake-3.31.5-windows.zip",
+      "digest": "6a51cf2d1f300edecbf04603087a31b07a0fcdec",
+      "extracted": "C:\\Users\\panyuanhao\\.cache\\zhixing-android-tools\\cmake-3.31.5-windows"
+    },
+    {
+      "name": "platform-33-ext3_r03.zip",
+      "url": "https://dl.google.com/android/repository/platform-33-ext3_r03.zip",
+      "digest": "394bc86d8d3452aa4d419b67743025a6fb2cd9d0",
+      "extracted": "C:\\Users\\panyuanhao\\.cache\\zhixing-android-tools\\platform-33-ext3_r03"
+    },
+    {
+      "name": "ncnn-20260526-android-vulkan.zip",
+      "url": "https://github.com/Tencent/ncnn/releases/download/20260526/ncnn-20260526-android-vulkan.zip",
+      "digest": "26909c92eed35afed4a966b5e9e503fcb0a529691ea3f910ec2c94a4fff52804",
+      "extracted": "C:\\Users\\panyuanhao\\.cache\\zhixing-android-tools\\ncnn-20260526-android-vulkan"
+    },
+    {
+      "name": "opencv-mobile-4.13.0-android.zip",
+      "url": "https://github.com/nihui/opencv-mobile/releases/download/v36/opencv-mobile-4.13.0-android.zip",
+      "digest": "56735469e0c344253122cbc66f5e69e5f3b2c131a0f892eb68fa5530be763b83",
+      "extracted": "C:\\Users\\panyuanhao\\.cache\\zhixing-android-tools\\opencv-mobile-4.13.0-android"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+.gimbal-follow-panel{margin-top:18px;padding-top:16px;border-top:1px solid #304347;min-width:0}
+.gimbal-follow-panel .follow-confirm{display:flex;align-items:flex-start;gap:9px;margin:14px 0;line-height:1.6}
+.gimbal-follow-panel .follow-confirm input{flex:none;width:18px;height:18px;margin-top:3px}
+.gimbal-follow-panel .fold-content{display:flex;flex-direction:column;gap:12px}
+.gimbal-follow-panel .fold-content label{display:flex;flex-direction:column;gap:6px}
+.gimbal-follow-panel .hint{overflow-wrap:anywhere}

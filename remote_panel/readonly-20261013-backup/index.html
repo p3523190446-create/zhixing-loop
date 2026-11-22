@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>知行回路 · 小车状态</title>
+<style>
+:root{color-scheme:dark;--bg:#101619;--panel:#192226;--text:#ecf4f1;--dim:#9aaba6;--line:#304039;--accent:#b6e8c0;--warn:#ffce84;--bad:#ff9e9b}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Microsoft YaHei",sans-serif}main{max-width:880px;margin:auto;padding:28px 20px 40px}header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:28px}h1{font-size:26px;margin:0 0 5px;letter-spacing:.03em}.muted{color:var(--dim);font-size:13px;line-height:1.6}.badge{white-space:nowrap;color:var(--warn);border:1px solid var(--line);border-radius:30px;padding:8px 12px;font-size:13px}.online{color:var(--accent)}.bad{color:var(--bad)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px}.label{font-size:13px;color:var(--dim)}.value{font-size:38px;font-weight:650;line-height:1.35;letter-spacing:-.025em;margin:9px 0 4px;font-variant-numeric:tabular-nums}.unit{font-size:14px;color:var(--dim);margin-left:6px;font-weight:400}.smallval{font-size:24px}.section{margin-top:16px}h2{margin:0 0 16px;font-size:16px;font-weight:600}.wheels{display:grid;grid-template-columns:1fr 1fr;gap:10px}.wheel{border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:8px}.wheel b{font-size:23px;font-variant-numeric:tabular-nums}.wheel span{font-size:12px;color:var(--dim)}.wheel em{font-style:normal;display:block;font-size:11px;color:var(--dim);margin-top:3px}.state{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}.state:last-child{border:0}.state span{color:var(--dim)}#notice{padding:14px 16px;border-left:3px solid var(--warn);background:#28251e;border-radius:8px;margin-bottom:16px;font-size:14px;line-height:1.6}canvas{display:block;width:100%;height:130px}footer{margin-top:22px;color:var(--dim);font-size:12px;line-height:1.7}@media(max-width:450px){main{padding:22px 14px}h1{font-size:23px}.card{padding:16px}.value{font-size:34px}.smallval{font-size:22px}.wheel{padding:12px}}
+</style></head><body><main>
+<header><div><h1>知行回路</h1><div class="muted">电脑联调 · CH32主控</div></div><div id="connection" class="badge">等待连接</div></header>
+<div id="notice">正在获取小车状态…</div>
+<div class="grid">
+<section class="card"><div class="label">前方距离</div><div class="value"><span id="distance">--</span><span class="unit">cm</span></div><div id="guard" class="muted">等待测距</div></section>
+<section class="card"><div class="label">电池电压</div><div class="value"><span id="voltage">--</span><span class="unit">V</span></div><div class="muted">驱动板回报值</div></section>
+<section class="card"><div class="label">运行时间</div><div class="value smallval" id="uptime">--</div><div class="muted">主控本次开机时长</div></section>
+<section class="card"><div class="label">预警距离</div><div class="value"><span id="warning">--</span><span class="unit">cm</span></div><div id="sound" class="muted">声音状态未知</div></section>
+</div>
+<section class="card section"><h2>四轮速度 <span class="muted">mm/s</span></h2><div class="wheels">
+<div class="wheel"><div><span>M1 · 左前</span><em>编码器折算轮速</em></div><b id="m1">--</b></div>
+<div class="wheel"><div><span>M3 · 右前</span><em>编码器折算轮速</em></div><b id="m3">--</b></div>
+<div class="wheel"><div><span>M2 · 左后</span><em>编码器折算轮速</em></div><b id="m2">--</b></div>
+<div class="wheel"><div><span>M4 · 右后</span><em>编码器折算轮速</em></div><b id="m4">--</b></div>
+</div></section>
+<section class="card section"><h2>距离趋势 <span class="muted">最近60次更新</span></h2><canvas id="plot"></canvas><div id="plotNote" class="muted">等待有效距离</div></section>
+<section class="card section"><h2>模块与反馈</h2><div class="state"><span>电机反馈</span><b id="driver">--</b></div><div class="state"><span>主控检测到的电机故障</span><b id="fault">--</b></div><div class="state"><span>驱动串口</span><b id="uart">--</b></div><div class="state"><span>最近数据</span><b id="fresh">--</b></div></section>
+<footer>当前使用电脑联调，只查看真实状态。手机网络连接留待后续验收。轮速不等于实际地面车速；暂未接入视频与遥控。</footer>
+</main><script>
+const $=id=>document.getElementById(id),base=location.pathname.replace(/\/$/,''),history=[];
+let lastTick=-1,inFlight=false,lastSuccess=0;
+const guards=['安全距离','进入预警距离','进入危险距离','测距故障'];
+const faults=['无已锁存故障','轮速异常','轮速持续异常','编码器速度异常','反馈中断','串口错误','转动方向异常','其他车轮异常转动'];
+function fmt(v,f=1){return v==null?'--':Number(v).toFixed(f)}
+function duration(s){if(s==null)return'--';return `${Math.floor(s/3600)}:${String(Math.floor(s/60)%60).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`}
+function draw(){const c=$('plot'),dpr=devicePixelRatio||1,w=c.clientWidth,h=130;c.width=w*dpr;c.height=h*dpr;const g=c.getContext('2d');g.scale(dpr,dpr);g.strokeStyle='#304039';for(let y=20;y<130;y+=35){g.beginPath();g.moveTo(0,y);g.lineTo(w,y);g.stroke()}const values=history.filter(v=>v!=null),max=Math.max(100,...values);g.strokeStyle='#b6e8c0';g.lineWidth=2;g.beginPath();let open=false;history.forEach((v,i)=>{if(v==null){open=false;return}let x=i*w/59,y=120-v/max*105;if(open)g.lineTo(x,y);else g.moveTo(x,y);open=true});g.stroke();$('plotNote').textContent=values.length?`本窗口最高 ${fmt(max/10)} cm · 中断处不连线`:'等待有效距离'}
+function render(d){const live=d.connected;$('connection').textContent=live?'主控已连接':'主控未连接';$('connection').className='badge '+(live?'online':'bad');
+ $('distance').textContent=fmt(d.distance_mm==null?null:d.distance_mm/10);$('voltage').textContent=fmt(d.voltage_mv==null?null:d.voltage_mv/1000,2);$('uptime').textContent=duration(d.uptime_s);$('warning').textContent=fmt(d.warning_mm==null?null:d.warning_mm/10);
+ $('guard').textContent=live?(guards[d.guard_state]||'状态未知'):'等待测距';$('sound').textContent=d.muted==null?'声音状态未知':(d.muted?'静音':'声音开启');
+ for(let i=0;i<4;i++)$('m'+(i+1)).textContent=d.wheel_speeds_mm_s?d.wheel_speeds_mm_s[i]:'--';
+ $('driver').textContent=live?(['未连','待机','转动','故障'][d.driver_state]||'未知'):'--';$('fault').textContent=live?(faults[d.motor_fault]||'未知故障'):'--';
+ $('uart').textContent=live?`错误 ${d.uart_errors} / 丢字节 ${d.uart_drops}`:'--';$('fresh').textContent=live?`${(d.age_ms/1000).toFixed(1)}秒前`:'已中断';
+ let msg=!live?'连接已中断，当前数值已清空。':d.guard_state===3?'测距异常，请检查传感器连接。':d.driver_state===0?'电机反馈未更新，请检查驱动板供电与通信。':d.driver_state===3?'驱动反馈存在故障，请查看下方故障信息。':null;
+ $('notice').hidden=!msg;$('notice').textContent=msg||'';
+ if(!live){if(history[history.length-1]!==null)history.push(null);lastTick=-1}else if(d.uptime_s!==lastTick){history.push(d.distance_mm);lastTick=d.uptime_s}
+ while(history.length>60)history.shift();draw();
+}
+async function update(){if(inFlight)return;inFlight=true;const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),2500);try{const r=await fetch(base+'/api/status',{cache:'no-store',signal:controller.signal});if(!r.ok)throw Error();const d=await r.json();lastSuccess=Date.now();render(d)}catch(e){render({connected:false})}finally{clearTimeout(timer);inFlight=false}}
+setInterval(update,1000);setInterval(()=>{if(lastSuccess&&Date.now()-lastSuccess>5000)render({connected:false})},1000);addEventListener('resize',draw);update();
+</script></body></html>

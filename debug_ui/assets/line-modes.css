@@ -1,0 +1,54 @@
+/* Automatic following shares the manual console's navy, cyan and amber palette. */
+.route-console.card{margin:22px 0 0;padding:22px;border:1px solid #34495d;border-radius:16px;background:linear-gradient(125deg,#182635,#111c29);color:#b8ccdd}
+.route-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+.route-heading small{display:block;font:10px ui-monospace,Consolas,monospace;letter-spacing:.14em;color:#81b7cb}
+.route-heading h2{margin:5px 0 0;font-size:20px;color:#e4f0f8;font-weight:600}
+.route-state{padding:6px 10px;border-radius:20px;border:1px solid #3c5267;color:#a7bbcf;background:#19293a;font-size:11px;white-space:nowrap}
+.route-state[data-state=running]{color:#aff0d5;border-color:#4b927b;background:#183d35}
+.route-state[data-state=search]{color:#f4d5a6;border-color:#907243;background:#3b3020}
+.route-state[data-state=fault]{color:#f1bdc5;border-color:#835966;background:#3b2732}
+.route-modes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.route-mode{display:block;position:relative;min-width:0;padding:16px;text-align:left;border:1px solid #344a60;border-radius:12px;background:#152231;color:#a9c0d4;cursor:pointer;font:inherit;transition:background .15s,border-color .15s}
+.route-mode[aria-pressed=true]{border-color:#73bdcf;background:#1b3344;box-shadow:inset 0 0 0 1px #73bdcf33}
+.route-mode:focus-visible{outline:2px solid #c1ecff;outline-offset:3px}
+.route-mode:disabled{cursor:not-allowed;opacity:.65}
+.route-mode-top{display:flex;justify-content:space-between;gap:5px;align-items:center}
+.route-mode-number{font:11px ui-monospace,Consolas,monospace;color:#7aa2bd;white-space:nowrap;flex-shrink:0}
+.route-mode-tag{font-size:10px;padding:3px 7px;border-radius:20px;background:#244537;color:#b1e4ca;white-space:nowrap}
+.route-mode-tag.pending{background:#3b3327;color:#d9bf94}
+.route-mode svg{display:block;width:100%;height:82px;margin:8px 0;color:#9ce0e9}
+.route-mode[data-follow-mode=fixed] svg{color:#d5bc8f}
+.route-mode .route-path{fill:none;stroke:currentColor;stroke-width:1.5;stroke-dasharray:4 4;opacity:.48}
+.route-mode .route-car{fill:#223d51;stroke:currentColor;stroke-width:1.5}
+.route-mode .route-nose{fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round}
+.route-mode strong{display:block;font-size:16px;color:#e0edf7;line-height:1.5}
+.route-mode .route-caption{display:block;font-size:11px;margin-top:3px;line-height:1.65;color:#9bb4cb}
+.route-console .route-description{margin:13px 0 0;font-size:12px;line-height:1.8;color:#b8cfdf}
+.route-readiness{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 14px;padding:0;list-style:none}
+.route-readiness li{display:flex;align-items:center;gap:6px;padding:5px 8px;border:1px solid #3d4c5e;border-radius:6px;color:#94a8bc;font-size:11px}
+.route-readiness li:before{content:"";width:5px;height:5px;border-radius:50%;background:#788b9e;flex-shrink:0}
+.route-readiness li[data-ready=true]{color:#b6dfd5;border-color:#3a655e}
+.route-readiness li[data-ready=true]:before{background:#81d8bb}
+.route-live{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;border:1px solid #31465b;border-radius:9px;overflow:hidden;background:#31465b;margin:14px 0}
+.route-live>div{padding:11px 14px;background:#132232;min-width:0}
+.route-console .route-live small{display:block;font-size:10px;color:#8faac3}
+.route-live strong{display:block;margin-top:5px;font-size:15px;line-height:1.5;color:#d6e8f7;font-weight:500;overflow-wrap:anywhere}
+.route-console .line-task-fields{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0}
+.route-console .line-task-fields label{font-size:11px;color:#a2bbcf}
+.route-console .line-task-fields select{min-height:42px;padding:9px;background:#122131;border-color:#3c5971;color:#d6e8f5;font-size:12px}
+.route-console .route-options{margin:12px 0;border-top:1px solid #304558;padding-top:10px}
+.route-console .route-options>summary{font-size:11px;min-height:32px;line-height:32px;color:#9fb8ce;cursor:pointer}
+.route-console .route-options .line-task-fields{grid-template-columns:1fr;max-width:350px;margin-top:5px}
+.route-console .line-task-actions{gap:10px;margin-top:15px}
+.route-console .line-task-actions button{min-height:45px;flex:1;font-size:13px;font-weight:500;padding:10px;background:#245568;border-color:#548d9f;color:#ddf4ff}
+.route-console .line-task-actions #stopLineTask{flex:0 0 110px;background:#422e39;border-color:#825768;color:#f6d3dc}
+.route-console .line-task-actions button:disabled{opacity:.48}
+.route-console #lineTaskFeedback{padding:11px 13px;background:#101c2a;border:1px solid #31445a;border-radius:8px;font-size:12px;color:#c3d6e7;margin:12px 0 8px;line-height:1.8;overflow-wrap:anywhere}
+.route-console .route-links{display:flex;gap:14px;flex-wrap:wrap;margin-top:9px}
+.route-links button{padding:5px 0;min-height:32px;background:none;border:0;border-bottom:1px solid #4e7286;color:#b2d6e5;cursor:pointer;font-size:11px}
+.route-console #lineTaskPlanSaved,.route-console .route-footnote{font-size:10px;line-height:1.8;color:#8ba4bc;margin:8px 0 0}
+.route-console .route-capability{padding:10px 12px;margin:12px 0 0;border:1px solid #6b5941;border-radius:8px;background:#302a21;font-size:11px;color:#dfc7a7;line-height:1.8}
+.route-console [hidden]{display:none!important}
+@media(min-width:1100px){.route-console-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}.route-console-layout>div{min-width:0}.route-console .route-description{margin-top:0}.route-console .route-modes{align-content:start}.route-mode svg{height:98px}}
+@media(max-width:600px){.route-console.card{padding:16px;margin-top:16px}.route-heading h2{font-size:18px}.route-modes{gap:8px}.route-mode{padding:11px}.route-mode svg{height:65px}.route-mode strong{font-size:14px}.route-mode .route-caption{font-size:10px}.route-mode-tag{font-size:9px;padding:3px 5px}.route-mode-number{font-size:10px}.route-console .route-description{font-size:11px;margin-top:12px}.route-console .line-task-fields{grid-template-columns:1fr 1fr;gap:10px}.route-console .line-task-fields label:last-child{grid-column:1/-1}.route-live>div{padding:9px}.route-live strong{font-size:12px}.route-console .line-task-actions #stopLineTask{flex:0 0 88px}.route-console .line-task-actions button{font-size:12px}.route-readiness{gap:6px}.route-readiness li{font-size:10px}.route-state{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.route-mode{transition:none}}

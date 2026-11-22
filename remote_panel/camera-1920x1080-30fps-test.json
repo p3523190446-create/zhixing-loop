@@ -1,0 +1,16 @@
+{
+  "running": true,
+  "valid": true,
+  "seq": 1148,
+  "age_ms": 31,
+  "fps": 30.0,
+  "width": 1920,
+  "height": 1080,
+  "resolution": "1920x1080",
+  "requested_fps": 30,
+  "dimensions_verified": true,
+  "device": "HDI Webcam USB",
+  "error": null,
+  "source": "External USB 145F:02EC",
+  "recording": false
+}

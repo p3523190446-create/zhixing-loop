@@ -1,0 +1,13 @@
+{
+  "running": false,
+  "valid": false,
+  "seq": 3044,
+  "age_ms": 42484,
+  "fps": 29.7,
+  "width": 640,
+  "height": 480,
+  "device": "HDI Webcam USB",
+  "error": "画面已关闭",
+  "source": "External USB 145F:02EC",
+  "recording": false
+}

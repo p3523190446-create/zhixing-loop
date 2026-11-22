@@ -1,0 +1,66 @@
+{
+  "result": "PASS_READONLY_HTTP_FRESHNESS_AND_STALE_MASKING",
+  "checked_at": "2026-10-08T16:24:13.112620+00:00",
+  "snapshots": [
+    {
+      "connected": true,
+      "error": null,
+      "received_at": "2026-10-08T16:24:10.699116+00:00",
+      "uptime_s": 3307,
+      "range_rounds": 32409,
+      "distance_mm": 130,
+      "range_valid": true,
+      "guard_state": 1,
+      "voltage_mv": 8100,
+      "driver_state": 1,
+      "wheel_speeds_mm_s": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "motion_active": false,
+      "motor_fault": 0,
+      "warning_mm": 120,
+      "muted": true,
+      "uart_errors": 0,
+      "uart_drops": 0,
+      "serial_source": "CH32 UART",
+      "mode": "READ_ONLY",
+      "age_ms": 375
+    },
+    {
+      "connected": true,
+      "error": null,
+      "received_at": "2026-10-08T16:24:12.184941+00:00",
+      "uptime_s": 3309,
+      "range_rounds": 32424,
+      "distance_mm": 132,
+      "range_valid": true,
+      "guard_state": 1,
+      "voltage_mv": 8100,
+      "driver_state": 1,
+      "wheel_speeds_mm_s": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "motion_active": false,
+      "motor_fault": 0,
+      "warning_mm": 120,
+      "muted": true,
+      "uart_errors": 0,
+      "uart_drops": 0,
+      "serial_source": "CH32 UART",
+      "mode": "READ_ONLY",
+      "age_ms": 891
+    }
+  ],
+  "POST": 405,
+  "unknown_path": 404,
+  "serial_opened_by_check": false,
+  "motion_commands": "NONE",
+  "phone_network_acceptance": "PENDING_USER_TEST",
+  "visual_layout": "NOT_INSPECTED"
+}

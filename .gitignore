@@ -1,0 +1,12 @@
+build/
+__pycache__/
+*.pyc
+remote_panel/recordings/
+remote_panel/diagnostics/
+algorithm_lab/vendor/**/*.onnx
+*.log
+*.mjpeg
+*.mp4
+*.apk
+.venv/
+node_modules/

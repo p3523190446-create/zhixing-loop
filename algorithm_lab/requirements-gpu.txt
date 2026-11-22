@@ -1,0 +1,3 @@
+# Install into a separate target directory; common dependencies are in algorithm_deps.
+# CUDA/cuDNN DLLs are preloaded from the documented existing torch/lib directory.
+onnxruntime-gpu==1.24.4

@@ -1,0 +1,115 @@
+#include "UART.h"
+#include "vision_uart.h"
+#include "uvc_bridge.h"
+#include "servo_probe.h"
+#include "remote_drive.h"
+#include "line_task_runtime.h"
+#include <stdio.h>
+
+volatile UART_CTL Uart;
+__attribute__((aligned(4))) uint8_t UART2_Tx_Buf[DEF_UARTx_TX_BUF_LEN];
+__attribute__((aligned(4))) uint8_t UART2_Rx_Buf[DEF_UARTx_RX_BUF_LEN];
+volatile uint32_t native_bus_resets,native_rx_bytes,native_tx_queued,native_rejected,native_overflows;
+static uint32_t seen_reset;static uint8_t camera_link_active;
+static char command[192];static unsigned command_len;static uint8_t discarding;
+static uint8_t replies[16][192];static uint16_t reply_len[16];static unsigned reply_offset;
+static unsigned reply_head,reply_count;
+
+/* Vendor ISR calls these legacy names; there is deliberately no UART hardware. */
+void UART2_USB_Init(void){}
+void UART2_ParaInit(uint8_t mode)
+{
+    (void)mode;
+    memset((void*)&Uart,0,sizeof(Uart));
+    Uart.Com_Cfg[0]=0x00;Uart.Com_Cfg[1]=0xC2;Uart.Com_Cfg[2]=0x01;
+    Uart.Com_Cfg[6]=8;Uart.Com_Cfg[7]=DEF_UARTx_RX_TIMEOUT;
+    Uart.Rx_TimeOutMax=DEF_UARTx_RX_TIMEOUT;++native_bus_resets;
+}
+static void reply(const char *text)
+{
+    unsigned n=(unsigned)strlen(text);
+    if(n>192||reply_count==16){++native_overflows;return;}
+    unsigned tail=(reply_head+reply_count)%16;
+    memcpy(replies[tail],text,n);reply_len[tail]=(uint16_t)n;++reply_count;
+}
+static void dispatch(uint32_t now)
+{
+    if(line_task_usb_command(command,now,reply))return;
+    if(remote_drive_command(command,now,reply))return;
+    if(uvc_bridge_command(command,now,reply))return;
+    if(!strcmp(command,"PING"))reply("PONG\n");
+    else if(!strcmp(command,"NATIVE_ID"))reply("NATIVE_USBFS,1\n");
+    else if(!strcmp(command,"NATIVE_FEATURES"))reply("NORMAL_USBFS,2\n");
+    else if(!strcmp(command,"GIMBAL_CAPS"))reply("GIMBAL_CAPS,2,500,2500,4000\n");
+    else if(!strcmp(command,"ZX_NATIVE_A01"))reply("ZX_NATIVE_A01\n");
+    else if(!strcmp(command,"ZX_NATIVE_B02"))reply("ZX_NATIVE_B02\n");
+    else if(!strcmp(command,"ZX_NATIVE_C03"))reply("ZX_NATIVE_C03\n");
+    else if(!vision_usb_query(command,now,reply))++native_rejected;
+}
+void native_usb_poll(uint32_t now)
+{
+    uint8_t packet[64];unsigned n=0;
+    NVIC_DisableIRQ(USBFS_IRQn);
+    if(seen_reset!=native_bus_resets){
+        if(remote_drive_armed&&!remote_drive_uart_owner){remote_drive_stop(3u);}
+        servo_probe_stop();uvc_bridge_stop();camera_link_active=0;seen_reset=native_bus_resets;command_len=0;discarding=0;reply_head=0;reply_count=0;reply_offset=0;
+    }
+    if(Uart.Tx_RemainNum){
+        unsigned slot=Uart.Tx_DealNum;n=Uart.Tx_PackLen[slot];
+        if(n<=64)memcpy(packet,&UART2_Tx_Buf[slot*DEF_USB_FS_PACK_LEN],n);
+        else {n=0;++native_overflows;}
+        Uart.Tx_DealNum=(uint16_t)((slot+1)%DEF_UARTx_TX_BUF_NUM_MAX);--Uart.Tx_RemainNum;
+        if(Uart.USB_Down_StopFlag&&Uart.Tx_RemainNum<DEF_UARTx_TX_BUF_NUM_MAX-2){
+            Uart.USB_Down_StopFlag=0;
+            USBFSD->UEP2_RX_CTRL=(USBFSD->UEP2_RX_CTRL&~USBFS_UEP_R_RES_MASK)|USBFS_UEP_R_RES_ACK;
+        }
+    }
+    NVIC_EnableIRQ(USBFS_IRQn);
+    if(!USBFS_DevEnumStatus || (USBFS_DevSleepStatus&2u)){
+        /* Stop on loss of an established P7 link. An absent P7 at boot must not
+         * repeatedly cancel explicit P9 bench capture commands. */
+        if(remote_drive_armed&&!remote_drive_uart_owner){remote_drive_stop(3u);}
+        if(camera_link_active){servo_probe_stop();uvc_bridge_stop();camera_link_active=0;}
+        command_len=0;discarding=0;reply_head=0;reply_count=0;reply_offset=0;return;
+    }
+    camera_link_active=1;
+    for(unsigned i=0;i<n;i++){
+        uint8_t ch=packet[i];++native_rx_bytes;
+        if(ch=='\n'){
+            if(discarding){++native_rejected;reply("ERR,LINE\n");}
+            else {command[command_len]=0;dispatch(now);}
+            command_len=0;discarding=0;
+        }else if(ch=='\r'){
+            /* Native serial diagnostic uses LF commands; CR is rejected. */
+            discarding=1;
+        }else if(ch<32||ch>126||command_len>=sizeof(command)-1)discarding=1;
+        else if(!discarding)command[command_len++]=(char)ch;
+    }
+    NVIC_DisableIRQ(USBFS_IRQn);
+    /* A USB reset during parsing invalidates the pending response, never replay it. */
+    if(seen_reset==native_bus_resets&&USBFS_DevEnumStatus&&reply_count&&!USBFS_Endp_Busy[DEF_UEP3]){
+        unsigned chunk=reply_len[reply_head]-reply_offset;
+        if(chunk>64)chunk=64;
+        if(USBFS_Endp_DataUp(DEF_UEP3,replies[reply_head]+reply_offset,chunk,DEF_UEP_CPY_LOAD)==0){
+            ++native_tx_queued;reply_offset+=chunk;
+            if(reply_offset==reply_len[reply_head]){reply_offset=0;reply_head=(reply_head+1)%16;--reply_count;}
+        }
+    }
+    NVIC_EnableIRQ(USBFS_IRQn);
+}
+
+/* P9-only observer: never claim/reconfigure P7 or replay a command. */
+void native_usb_diagnostics(char *text,unsigned size,uint32_t now)
+{
+    uint32_t v[12];
+    NVIC_DisableIRQ(USBFS_IRQn);
+    v[0]=USBFS_DevAddr;v[1]=USBFS_DevConfig;v[2]=USBFS_DevEnumStatus;
+    v[3]=USBFS_DevSleepStatus;v[4]=native_bus_resets;v[5]=native_rx_bytes;
+    v[6]=native_tx_queued;v[7]=native_rejected;v[8]=native_overflows;
+    v[9]=Uart.Tx_RemainNum;v[10]=USBFS_Endp_Busy[DEF_UEP3];v[11]=USBFSD->INT_FG;
+    NVIC_EnableIRQ(USBFS_IRQn);
+    snprintf(text,size,"USB_STATUS,%lu,%lu,%lu,%lu,%lu,%lu,%lu,%lu,%lu,%lu,%lu,%lu,%lu\n",
+        (unsigned long)now,(unsigned long)v[0],(unsigned long)v[1],(unsigned long)v[2],
+        (unsigned long)v[3],(unsigned long)v[4],(unsigned long)v[5],(unsigned long)v[6],
+        (unsigned long)v[7],(unsigned long)v[8],(unsigned long)v[9],(unsigned long)v[10],(unsigned long)v[11]);
+}

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>知行回路 · 小车状态</title>
+<style>
+:root{color-scheme:dark;--bg:#101619;--panel:#192226;--text:#ecf4f1;--dim:#9aaba6;--line:#304039;--accent:#b6e8c0;--warn:#ffce84;--bad:#ff9e9b}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Microsoft YaHei",sans-serif}main{max-width:880px;margin:auto;padding:28px 20px 40px}header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:28px}h1{font-size:26px;margin:0 0 5px;letter-spacing:.03em}.muted{color:var(--dim);font-size:13px;line-height:1.6}.badge{white-space:nowrap;color:var(--warn);border:1px solid var(--line);border-radius:30px;padding:8px 12px;font-size:13px}.online{color:var(--accent)}.bad{color:var(--bad)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px}.label{font-size:13px;color:var(--dim)}.value{font-size:38px;font-weight:650;line-height:1.35;letter-spacing:-.025em;margin:9px 0 4px;font-variant-numeric:tabular-nums}.unit{font-size:14px;color:var(--dim);margin-left:6px;font-weight:400}.smallval{font-size:24px}.section{margin-top:16px}h2{margin:0 0 16px;font-size:16px;font-weight:600}.wheels{display:grid;grid-template-columns:1fr 1fr;gap:10px}.wheel{border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:8px}.wheel b{font-size:23px;font-variant-numeric:tabular-nums}.wheel span{font-size:12px;color:var(--dim)}.wheel em{font-style:normal;display:block;font-size:11px;color:var(--dim);margin-top:3px}.state{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}.state:last-child{border:0}.state span{color:var(--dim)}#notice{padding:14px 16px;border-left:3px solid var(--warn);background:#28251e;border-radius:8px;margin-bottom:16px;font-size:14px;line-height:1.6}canvas{display:block;width:100%;height:130px}footer{margin-top:22px;color:var(--dim);font-size:12px;line-height:1.7}@media(max-width:450px){main{padding:22px 14px}h1{font-size:23px}.card{padding:16px}.value{font-size:34px}.smallval{font-size:22px}.wheel{padding:12px}}
+
+.gimbal{margin-bottom:16px;border-color:#52755a}.gimbal-head{display:flex;justify-content:space-between;align-items:center;gap:12px}.gimbal-head h2{margin:0}.controls-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}button{font:inherit;border:1px solid #476550;border-radius:10px;background:#b6e8c0;color:#14291a;padding:11px 17px;cursor:pointer;font-weight:600}button.secondary{background:transparent;color:var(--text)}button.stop{background:#edaaa4;border-color:#edaaa4;color:#371a17}button:disabled{opacity:.4;cursor:default}.axis{margin-top:20px}.axis-title{display:flex;justify-content:space-between;align-items:center;font-size:14px}.axis input{width:100%;margin:15px 0 4px;accent-color:var(--accent);height:25px}.axis-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--dim)}.nudge{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}.nudge button{padding:10px 6px}.feedback{border-top:1px solid var(--line);padding-top:12px;margin-top:16px;font-size:13px;line-height:1.7}.event-note{color:var(--dim);font-size:12px;margin-top:8px;min-height:18px}
+
+.stick-layout{display:flex;gap:22px;align-items:center;flex-wrap:wrap;margin-top:18px}.stick-pad{position:relative;width:240px;height:240px;max-width:100%;border:1px solid #52755a;border-radius:24px;background:radial-gradient(circle,#304b3b 0,#1b2922 68%);touch-action:none;user-select:none;outline-offset:4px}.stick-pad:before,.stick-pad:after{content:'';position:absolute;background:#476550;pointer-events:none}.stick-pad:before{width:1px;height:86%;top:7%;left:50%}.stick-pad:after{height:1px;width:86%;left:7%;top:50%}.stick-thumb{position:absolute;left:50%;top:50%;width:46px;height:46px;border-radius:50%;background:#b6e8c0;box-shadow:0 3px 16px #0006;transform:translate(-50%,-50%);pointer-events:none}.stick-pad[aria-disabled=true]{opacity:.4}.stick-help{flex:1;min-width:170px}.stick-help label{display:block;margin-bottom:8px}.stick-help select{background:#192226;color:#ecf4f1;border:1px solid #52755a;border-radius:8px;padding:10px;max-width:100%;font:inherit}
+
+.camera-card{margin-bottom:16px}.camera-title{display:flex;justify-content:space-between;align-items:center;gap:12px}.camera-title h2{margin:0}.camera-view{margin-top:16px;aspect-ratio:4/3;position:relative;display:grid;place-items:center;overflow:hidden;background:#0b1110;border:1px solid #304039;border-radius:12px}.camera-view img{display:block;width:100%;height:100%;object-fit:contain}.camera-view img[hidden]{display:none}.camera-view .placeholder{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:22px;color:var(--dim)}.camera-view .placeholder[hidden]{display:none}.camera-meta{margin-top:12px;color:var(--dim);font-size:13px}
+.camera-options{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}.camera-options label{display:grid;gap:6px;font-size:13px;color:var(--dim)}.camera-options select{padding:9px 12px;border:1px solid #476550;border-radius:8px;background:#192226;color:var(--text);font:inherit}</style></head><body><main>
+<header><div><h1>知行回路</h1><div class="muted">电脑联调 · CH32主控</div></div><div id="connection" class="badge">等待连接</div></header>
+<div id="notice">正在获取小车状态…</div>
+
+<section class="card camera-card" id="cameraCard"><div class="camera-title"><h2>外接摄像头</h2><span id="cameraState" class="badge">画面未开启</span></div><div class="camera-view"><img id="cameraImage" alt="外接摄像头实时画面" hidden><div id="cameraPlaceholder" class="placeholder">点击“开启画面”，查看云台上的摄像头</div></div><div class="camera-meta" id="cameraMeta">640×480 · 实时预览 · 尚未录像</div><div class="camera-options"><label for="cameraResolution">清晰度<select id="cameraResolution"><option value="320x240">320×240 · 流畅优先</option><option value="640x480" selected>640×480 · 标准</option><option value="1280x720">1280×720 · 720P</option><option value="1920x1080">1920×1080 · 1080P</option></select></label><label for="cameraFps">预览帧率<select id="cameraFps"><option value="5">5帧/秒</option><option value="10">10帧/秒</option><option value="15" selected>15帧/秒</option><option value="20">20帧/秒</option><option value="30">30帧/秒</option></select></label></div><div class="controls-row"><button id="startCamera">开启画面</button><button id="stopCamera" class="secondary" disabled>关闭画面</button><button id="applyCamera" class="secondary" disabled>应用画质与帧率</button></div></section>
+<section id="gimbal" class="card gimbal">
+ <div class="gimbal-head"><h2>摄像头云台</h2><span id="gimbalState" class="badge">等待主控</span></div>
+ <p class="muted">两轴范围已扩大。0为中间，位置是相对指令；支架实际极限尚未校准。</p>
+ <div class="controls-row"><button id="startControl" disabled>开启云台控制</button><button id="centerControl" class="secondary" disabled>回到中间</button><button id="stopControl" class="stop">停止</button></div>
+ <div class="stick-layout"><div id="joystick" class="stick-pad" role="group" aria-label="二维云台摇杆" aria-disabled="true" tabindex="0"><div id="stickThumb" class="stick-thumb"></div></div><div class="stick-help"><label for="amplitude">可用幅度</label><select id="amplitude"><option value="40">40% · 小幅</option><option value="60" selected>60% · 扩大</option><option value="80">80% · 逐步试探</option><option value="100">100% · 扩展全幅</option></select><p class="muted">按住摇杆拖动，可同时调整两轴；松手保持位置。键盘方向键也可调整。首次逐步加大，接近支架或线缆限制立即停止。</p><div id="stickNote" class="muted">等待开启控制</div></div></div>
+ <div class="axis"><div class="axis-title"><label for="yaw">水平位置</label><b id="yawValue">0</b></div><input id="yaw" type="range" min="-100" max="100" value="0" disabled><div class="axis-labels"><span>−100</span><span>中间</span><span>+100</span></div></div>
+ <div class="axis"><div class="axis-title"><label for="pitch">俯仰位置</label><b id="pitchValue">0</b></div><input id="pitch" type="range" min="-100" max="100" value="0" disabled><div class="axis-labels"><span>−100</span><span>中间</span><span>+100</span></div></div>
+ <div class="nudge"><button data-axis="yaw" data-step="-10" disabled>水平 −</button><button data-axis="yaw" data-step="10" disabled>水平 +</button><button data-axis="pitch" data-step="-10" disabled>俯仰 −</button><button data-axis="pitch" data-step="10" disabled>俯仰 +</button></div>
+ <div id="gimbalFeedback" class="feedback">打开页面不会自动转动。开启后才接受位置调整，关闭页面或切到后台会停止。</div><div id="controlEvent" class="event-note"></div>
+</section>
+<div class="grid">
+<section class="card"><div class="label">前方距离 · 原测距模块</div><div class="value"><span id="distance">--</span><span class="unit">cm</span></div><div id="guard" class="muted">等待测距</div></section>
+<section class="card"><div class="label">电池电压</div><div class="value"><span id="voltage">--</span><span class="unit">V</span></div><div class="muted">驱动板回报值</div></section>
+<section class="card"><div class="label">运行时间</div><div class="value smallval" id="uptime">--</div><div class="muted">主控本次开机时长</div></section>
+<section class="card"><div class="label">预警距离</div><div class="value"><span id="warning">--</span><span class="unit">cm</span></div><div id="sound" class="muted">声音状态未知</div></section>
+</div>
+<section class="card section"><h2>超声波距离 <span class="muted">cm</span></h2><div class="value smallval" id="ultraDistance">--</div><div id="ultraNote" class="muted">等待有效读数</div></section>
+<section class="card section"><h2>四轮速度 <span class="muted">mm/s</span></h2><div class="wheels">
+<div class="wheel"><div><span>M1 · 左前</span><em>编码器折算轮速</em></div><b id="m1">--</b></div>
+<div class="wheel"><div><span>M3 · 右前</span><em>编码器折算轮速</em></div><b id="m3">--</b></div>
+<div class="wheel"><div><span>M2 · 左后</span><em>编码器折算轮速</em></div><b id="m2">--</b></div>
+<div class="wheel"><div><span>M4 · 右后</span><em>编码器折算轮速</em></div><b id="m4">--</b></div>
+</div></section>
+<section class="card section"><h2>距离趋势 <span class="muted">最近60次更新</span></h2><canvas id="plot"></canvas><div id="plotNote" class="muted">等待有效距离</div></section>
+<section class="card section"><h2>模块与反馈</h2><div class="state"><span>电机反馈</span><b id="driver">--</b></div><div class="state"><span>主控检测到的电机故障</span><b id="fault">--</b></div><div class="state"><span>驱动串口</span><b id="uart">--</b></div><div class="state"><span>最近数据</span><b id="fresh">--</b></div></section>
+<footer>当前在电脑上预览外接画面、控制云台并查看主控反馈。手机连接与车辆遥控后续接入；轮速不等于实际地面车速。</footer>
+</main><script>
+const $=id=>document.getElementById(id),base=location.pathname.replace(/\/$/,''),history=[];
+let lastTick=-1,inFlight=false,lastSuccess=0;
+const guards=['安全距离','进入预警距离','进入危险距离','测距故障'];
+const faults=['无已锁存故障','轮速异常','轮速持续异常','编码器速度异常','反馈中断','串口错误','转动方向异常','其他车轮异常转动'];
+function fmt(v,f=1){return v==null?'--':Number(v).toFixed(f)}
+function duration(s){if(s==null)return'--';return `${Math.floor(s/3600)}:${String(Math.floor(s/60)%60).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`}
+function draw(){const c=$('plot'),dpr=devicePixelRatio||1,w=c.clientWidth,h=130;c.width=w*dpr;c.height=h*dpr;const g=c.getContext('2d');g.scale(dpr,dpr);g.strokeStyle='#304039';for(let y=20;y<130;y+=35){g.beginPath();g.moveTo(0,y);g.lineTo(w,y);g.stroke()}const values=history.filter(v=>v!=null),max=Math.max(100,...values);g.strokeStyle='#b6e8c0';g.lineWidth=2;g.beginPath();let open=false;history.forEach((v,i)=>{if(v==null){open=false;return}let x=i*w/59,y=120-v/max*105;if(open)g.lineTo(x,y);else g.moveTo(x,y);open=true});g.stroke();$('plotNote').textContent=values.length?`本窗口最高 ${fmt(max/10)} cm · 中断处不连线`:'等待有效距离'}
+function render(d,gimbalEpoch=controlEpoch){if(gimbalEpoch===controlEpoch&&!controlPending)renderGimbal(d);const live=d.connected;$('connection').textContent=live?'主控已连接':'主控未连接';$('connection').className='badge '+(live?'online':'bad');
+ $('distance').textContent=fmt(d.distance_mm==null?null:d.distance_mm/10);$('voltage').textContent=fmt(d.voltage_mv==null?null:d.voltage_mv/1000,2);$('uptime').textContent=duration(d.uptime_s);$('warning').textContent=fmt(d.warning_mm==null?null:d.warning_mm/10);
+ $('guard').textContent=live?(guards[d.guard_state]||'状态未知'):'等待测距';$('sound').textContent=d.muted==null?'声音状态未知':(d.muted?'静音':'声音开启');
+ for(let i=0;i<4;i++)$('m'+(i+1)).textContent=d.wheel_speeds_mm_s?d.wheel_speeds_mm_s[i]:'--';
+ $('driver').textContent=live?(['未连','待机','转动','故障'][d.driver_state]||'未知'):'--';$('fault').textContent=live?(faults[d.motor_fault]||'未知故障'):'--';
+ $('uart').textContent=live?`错误 ${d.uart_errors} / 丢字节 ${d.uart_drops}`:'--';$('fresh').textContent=live?`${(d.age_ms/1000).toFixed(1)}秒前`:'已中断';
+ let msg=!live?'连接已中断，当前数值已清空。':d.guard_state===3?'测距异常，请检查传感器连接。':d.driver_state===0?'当前只测试云台，尚无电机反馈。':d.driver_state===3?'驱动反馈存在故障，请查看下方故障信息。':null;
+ $('notice').hidden=!msg;$('notice').textContent=msg||'';
+ if(!live){if(history[history.length-1]!==null)history.push(null);lastTick=-1}else if(d.uptime_s!==lastTick){history.push(d.distance_mm);lastTick=d.uptime_s}
+ while(history.length>60)history.shift();draw();
+}
+async function update(){if(inFlight)return;inFlight=true;const epoch=controlEpoch,controller=new AbortController(),timer=setTimeout(()=>controller.abort(),2500);try{const r=await fetch(base+'/api/status',{cache:'no-store',signal:controller.signal});if(!r.ok)throw Error();const d=await r.json();lastSuccess=Date.now();render(d,epoch)}catch(e){render({connected:false},epoch)}finally{clearTimeout(timer);inFlight=false}}
+
+let controlEpoch=0,controlSession=null, controlPending=false, targetPending=false, targetDirty=false, heartbeatPending=false;
+let desiredYaw=0,desiredPitch=0,controlData=null,amplitude=60,stickPointer=null;
+const axisButtons=[...document.querySelectorAll('.nudge button')];
+function axisEnabled(active){$('yaw').disabled=$('pitch').disabled=$('centerControl').disabled=!active;axisButtons.forEach(b=>b.disabled=!active);$('joystick').setAttribute('aria-disabled',String(!active));if(!active){stickPointer=null;$('stickNote').textContent='等待开启控制'}}
+function paintTarget(){ $('yaw').value=desiredYaw;$('pitch').value=desiredPitch;$('yawValue').textContent=desiredYaw;$('pitchValue').textContent=desiredPitch;$('stickThumb').style.left=(50+desiredYaw/amplitude*40)+'%';$('stickThumb').style.top=(50+desiredPitch/amplitude*40)+'%'; }
+async function command(action,payload={}){
+ const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),2500);
+ try{const response=await fetch(base+'/api/gimbal/'+action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),signal:abort.signal});const data=await response.json();if(!response.ok)throw Error(data.error||'操作未确认');return data}finally{clearTimeout(timer)}
+}
+async function stopControl(message='云台已停止'){
+ controlEpoch++;controlSession=null;targetDirty=false;axisEnabled(false);
+ try{await command('stop');$('gimbalFeedback').textContent=message}catch(error){$('gimbalFeedback').textContent='停止回执未收到；主控会按连接超时停止。'}
+}
+function renderGimbal(d){
+ controlData=d;const g=d.gimbal,c=d.control||{},online=d.connected&&g&&g.ready;
+ if(controlSession&&(!online||!c.active)){console.warn('control status lost',{online,active:c.active,error:d.error,age:d.age_ms});controlSession=null;targetDirty=false}
+ const active=Boolean(controlSession&&online&&c.active);
+ axisEnabled(active);$('startControl').disabled=!online||c.active||controlPending;
+ $('gimbalState').textContent=!online?'主控未就绪':active?'手动控制中':c.active?'其他页面控制中':'已停止';
+ $('gimbalState').className='badge '+(active?'online':!online?'bad':'');
+ if(online&&g.active){const y=((g.yaw_us-1500)/5).toFixed(0),p=((g.pitch_us-1500)/5).toFixed(0);$('gimbalFeedback').textContent=`主控输出位置：水平 ${y} · 俯仰 ${p}。移动过程平滑过渡，点击停止可释放控制。`}
+ else if(!online)$('gimbalFeedback').textContent='等待主控连接；不会自动恢复控制。';
+ else if(!c.active)$('gimbalFeedback').textContent='已停止输出。点击“开启云台控制”后才能调整位置。';
+ const events=c.events||[];if(events.length)$('controlEvent').textContent=events[events.length-1].message;
+ const u=d.ultrasonic;$('ultraDistance').textContent=u&&u.valid?(u.distance_mm/10).toFixed(1):'--';
+ $('ultraNote').textContent=u&&u.valid?'主控回传的超声波读数 · 精度尚未校准':'当前无有效超声波读数';
+}
+$('startControl').addEventListener('click',async()=>{
+ if(controlPending)return;controlEpoch++;const startEpoch=controlEpoch;controlPending=true;$('startControl').disabled=true;
+ try{const data=await command('start');if(startEpoch!==controlEpoch||document.hidden){await command('stop');return}controlEpoch++;controlSession=data.session;desiredYaw=desiredPitch=0;paintTarget();axisEnabled(true);$('gimbalFeedback').textContent='主控已接受控制，正在回到中间位置。'}
+ catch(error){console.warn('manual start failed',error.message);$('gimbalFeedback').textContent=error.message;await stopControl('开启未确认，已请求停止')}
+ finally{controlPending=false;update()}
+});
+$('stopControl').addEventListener('click',()=>stopControl());
+$('centerControl').addEventListener('click',async()=>{
+ if(!controlSession)return;desiredYaw=desiredPitch=0;paintTarget();
+ try{await command('center',{session:controlSession})}catch(error){await stopControl()}
+});
+for(const axis of ['yaw','pitch'])$(axis).addEventListener('input',()=>{if(axis==='yaw')desiredYaw=Number($(axis).value);else desiredPitch=Number($(axis).value);paintTarget();targetDirty=true});
+axisButtons.forEach(button=>button.addEventListener('click',()=>{const step=Number(button.dataset.step);if(button.dataset.axis==='yaw')desiredYaw=Math.max(-amplitude,Math.min(amplitude,desiredYaw+step));else desiredPitch=Math.max(-amplitude,Math.min(amplitude,desiredPitch+step));paintTarget();targetDirty=true}));
+function applyAmplitude(){
+ amplitude=Number($('amplitude').value);
+ for(const axis of ['yaw','pitch']){$(axis).min=-amplitude;$(axis).max=amplitude}
+ document.querySelectorAll('.axis-labels').forEach(labels=>{labels.children[0].textContent='−'+amplitude;labels.children[2].textContent='+'+amplitude});
+ desiredYaw=Math.max(-amplitude,Math.min(amplitude,desiredYaw));desiredPitch=Math.max(-amplitude,Math.min(amplitude,desiredPitch));paintTarget();
+ if(controlSession)targetDirty=true;
+}
+$('amplitude').addEventListener('change',applyAmplitude);applyAmplitude();
+function stickMove(event){
+ if(!controlSession||$('joystick').getAttribute('aria-disabled')==='true')return;
+ const rect=$('joystick').getBoundingClientRect();
+ desiredYaw=Math.round(Math.max(-1,Math.min(1,(event.clientX-rect.left-rect.width/2)/(rect.width*.4)))*amplitude);
+ desiredPitch=Math.round(Math.max(-1,Math.min(1,(event.clientY-rect.top-rect.height/2)/(rect.height*.4)))*amplitude);
+ paintTarget();targetDirty=true;$('stickNote').textContent='正在调整两轴';
+}
+$('joystick').addEventListener('pointerdown',event=>{if(!controlSession)return;event.preventDefault();stickPointer=event.pointerId;$('joystick').setPointerCapture(event.pointerId);stickMove(event)});
+$('joystick').addEventListener('pointermove',event=>{if(event.pointerId===stickPointer)stickMove(event)});
+function releaseStick(event){if(event.pointerId!==stickPointer)return;stickPointer=null;$('stickNote').textContent='已松手，保持当前位置'}
+$('joystick').addEventListener('pointerup',releaseStick);$('joystick').addEventListener('pointercancel',releaseStick);
+$('joystick').addEventListener('keydown',event=>{if(!controlSession)return;const delta={ArrowLeft:[-5,0],ArrowRight:[5,0],ArrowUp:[0,-5],ArrowDown:[0,5]}[event.key];if(!delta)return;event.preventDefault();desiredYaw=Math.max(-amplitude,Math.min(amplitude,desiredYaw+delta[0]));desiredPitch=Math.max(-amplitude,Math.min(amplitude,desiredPitch+delta[1]));paintTarget();targetDirty=true;});
+setInterval(async()=>{
+ if(!controlSession||!targetDirty||targetPending||document.hidden)return;
+ targetPending=true;targetDirty=false;
+ try{await command('set',{session:controlSession,yaw:desiredYaw,pitch:desiredPitch})}catch(error){await stopControl()}
+ finally{targetPending=false}
+},200);
+setInterval(async()=>{
+ if(!controlSession||heartbeatPending||document.hidden)return;heartbeatPending=true;
+ try{await command('heartbeat',{session:controlSession})}catch(error){await stopControl()}
+ finally{heartbeatPending=false}
+},400);
+function backgroundStop(){if(!controlSession&&!controlPending)return;controlEpoch++;controlSession=null;targetDirty=false;axisEnabled(false);navigator.sendBeacon(base+'/api/gimbal/stop',new Blob(['{}'],{type:'application/json'}))}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)backgroundStop()});addEventListener('pagehide',backgroundStop);
+
+
+let cameraOn=false,cameraPending=false,cameraEpoch=0,framePending=false,frameURL=null,lastFrameSeq=-1,cameraStatusPending=false,cameraFramePeriod=1000/15,lastCameraFetch=0,previewTimes=[];
+function clearCameraFrame(message){$('cameraImage').hidden=true;$('cameraPlaceholder').hidden=false;$('cameraPlaceholder').textContent=message;if(frameURL){URL.revokeObjectURL(frameURL);frameURL=null}$('cameraImage').removeAttribute('src')}
+async function cameraCommand(action,payload={}){const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),7000);try{const r=await fetch(base+'/api/camera/'+action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),signal:abort.signal});const d=await r.json();if(!r.ok)throw Error(d.error||'摄像头未确认');return d}finally{clearTimeout(timer)}}
+async function cameraStatus(){if(cameraStatusPending)return;cameraStatusPending=true;const epoch=cameraEpoch,abort=new AbortController(),timer=setTimeout(()=>abort.abort(),2000);try{const r=await fetch(base+'/api/camera/status',{cache:'no-store',signal:abort.signal});const d=await r.json();if(epoch!==cameraEpoch)return;const now=performance.now(),recent=previewTimes.filter(t=>now-t<3000),actual=cameraOn&&d.valid&&recent.length>1?(recent.length-1)*1000/(recent[recent.length-1]-recent[0]):0;$('cameraMeta').textContent=`${d.width}×${d.height} · 目标${d.requested_fps}帧/秒 · 实际预览约${actual.toFixed(1)}帧/秒 · 尚未录像`;
+ if(cameraOn&&!d.running&&!cameraPending){cameraOn=false;clearCameraFrame(d.error||'摄像头已停止')}
+ $('cameraState').textContent=cameraOn?(d.valid?'画面更新中':'等待画面'):'画面未开启';$('cameraState').className='badge '+(cameraOn&&d.valid?'online':'');$('startCamera').disabled=cameraOn||cameraPending;$('stopCamera').disabled=!cameraOn&&!cameraPending;$('applyCamera').disabled=!cameraOn||cameraPending;$('cameraResolution').disabled=$('cameraFps').disabled=cameraPending;
+}catch(e){if(epoch===cameraEpoch&&cameraOn){clearCameraFrame('画面连接中断');$('cameraState').textContent='画面连接中断'}}finally{clearTimeout(timer);cameraStatusPending=false}}
+async function fetchCameraFrame(){if(!cameraOn||framePending||document.hidden||performance.now()-lastCameraFetch<cameraFramePeriod)return;lastCameraFetch=performance.now();framePending=true;const epoch=cameraEpoch,abort=new AbortController(),timer=setTimeout(()=>abort.abort(),1500);try{const r=await fetch(base+'/api/camera/frame',{cache:'no-store',signal:abort.signal});if(epoch!==cameraEpoch)return;if(!r.ok){clearCameraFrame('等待新画面；请检查摄像头连接');return}const seq=Number(r.headers.get('X-Frame-Seq'));const blob=await r.blob();if(epoch!==cameraEpoch||!cameraOn)return;if(seq===lastFrameSeq)return;lastFrameSeq=seq;const next=URL.createObjectURL(blob),old=frameURL;frameURL=next;$('cameraImage').src=next;$('cameraImage').hidden=false;$('cameraPlaceholder').hidden=true;if(old)URL.revokeObjectURL(old)}catch(e){if(epoch===cameraEpoch&&cameraOn)clearCameraFrame('画面连接中断，等待恢复')}finally{clearTimeout(timer);framePending=false}}
+async function startCameraPreview(restart=false){
+ if(cameraPending)return;cameraPending=true;cameraEpoch++;const epoch=cameraEpoch;
+ const chosen={resolution:$('cameraResolution').value,fps:Number($('cameraFps').value)};
+ $('startCamera').disabled=$('applyCamera').disabled=$('cameraResolution').disabled=$('cameraFps').disabled=true;$('stopCamera').disabled=false;
+ cameraOn=false;clearCameraFrame(restart?'正在切换画质与帧率…':'正在打开外接摄像头…');
+ try{if(restart)await cameraCommand('stop');await cameraCommand('start',chosen);if(epoch!==cameraEpoch||document.hidden){await cameraCommand('stop');return}cameraFramePeriod=1000/chosen.fps;lastCameraFetch=0;previewTimes=[];cameraOn=true;lastFrameSeq=-1;fetchCameraFrame()}
+ catch(e){clearCameraFrame(e.message);$('cameraState').textContent='摄像头未就绪'}finally{cameraPending=false;cameraStatus()}
+}
+$('cameraImage').addEventListener('load',()=>{if(cameraOn){previewTimes.push(performance.now());if(previewTimes.length>120)previewTimes.shift()}});
+$('cameraImage').addEventListener('error',()=>{if(cameraOn)clearCameraFrame('画面解码失败，请重新开启')});
+$('startCamera').addEventListener('click',()=>startCameraPreview());
+$('applyCamera').addEventListener('click',()=>startCameraPreview(true));
+$('stopCamera').addEventListener('click',async()=>{cameraEpoch++;cameraOn=false;clearCameraFrame('画面已关闭');try{await cameraCommand('stop')}catch(e){$('cameraPlaceholder').textContent='关闭未确认；页面停止取帧后服务会超时关闭'}cameraStatus()});
+function leaveCamera(){if(!cameraOn&&!cameraPending)return;cameraEpoch++;cameraOn=false;clearCameraFrame('画面已关闭');navigator.sendBeacon(base+'/api/camera/stop',new Blob(['{}'],{type:'application/json'}))}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)leaveCamera()});addEventListener('pagehide',leaveCamera);
+setInterval(fetchCameraFrame,10);setInterval(cameraStatus,1000);cameraStatus();
+
+setInterval(update,1000);setInterval(()=>{if(lastSuccess&&Date.now()-lastSuccess>5000)render({connected:false})},1000);addEventListener('resize',draw);update();
+</script></body></html>

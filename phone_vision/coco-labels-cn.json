@@ -1,0 +1,402 @@
+[
+  {
+    "id": 0,
+    "en": "person",
+    "cn": "人"
+  },
+  {
+    "id": 1,
+    "en": "bicycle",
+    "cn": "自行车"
+  },
+  {
+    "id": 2,
+    "en": "car",
+    "cn": "汽车"
+  },
+  {
+    "id": 3,
+    "en": "motorcycle",
+    "cn": "摩托车"
+  },
+  {
+    "id": 4,
+    "en": "airplane",
+    "cn": "飞机"
+  },
+  {
+    "id": 5,
+    "en": "bus",
+    "cn": "公交车"
+  },
+  {
+    "id": 6,
+    "en": "train",
+    "cn": "火车"
+  },
+  {
+    "id": 7,
+    "en": "truck",
+    "cn": "卡车"
+  },
+  {
+    "id": 8,
+    "en": "boat",
+    "cn": "船"
+  },
+  {
+    "id": 9,
+    "en": "traffic light",
+    "cn": "红绿灯"
+  },
+  {
+    "id": 10,
+    "en": "fire hydrant",
+    "cn": "消防栓"
+  },
+  {
+    "id": 11,
+    "en": "stop sign",
+    "cn": "停车标志"
+  },
+  {
+    "id": 12,
+    "en": "parking meter",
+    "cn": "停车计费器"
+  },
+  {
+    "id": 13,
+    "en": "bench",
+    "cn": "长椅"
+  },
+  {
+    "id": 14,
+    "en": "bird",
+    "cn": "鸟"
+  },
+  {
+    "id": 15,
+    "en": "cat",
+    "cn": "猫"
+  },
+  {
+    "id": 16,
+    "en": "dog",
+    "cn": "狗"
+  },
+  {
+    "id": 17,
+    "en": "horse",
+    "cn": "马"
+  },
+  {
+    "id": 18,
+    "en": "sheep",
+    "cn": "羊"
+  },
+  {
+    "id": 19,
+    "en": "cow",
+    "cn": "牛"
+  },
+  {
+    "id": 20,
+    "en": "elephant",
+    "cn": "大象"
+  },
+  {
+    "id": 21,
+    "en": "bear",
+    "cn": "熊"
+  },
+  {
+    "id": 22,
+    "en": "zebra",
+    "cn": "斑马"
+  },
+  {
+    "id": 23,
+    "en": "giraffe",
+    "cn": "长颈鹿"
+  },
+  {
+    "id": 24,
+    "en": "backpack",
+    "cn": "背包"
+  },
+  {
+    "id": 25,
+    "en": "umbrella",
+    "cn": "雨伞"
+  },
+  {
+    "id": 26,
+    "en": "handbag",
+    "cn": "手提包"
+  },
+  {
+    "id": 27,
+    "en": "tie",
+    "cn": "领带"
+  },
+  {
+    "id": 28,
+    "en": "suitcase",
+    "cn": "行李箱"
+  },
+  {
+    "id": 29,
+    "en": "frisbee",
+    "cn": "飞盘"
+  },
+  {
+    "id": 30,
+    "en": "skis",
+    "cn": "滑雪双板"
+  },
+  {
+    "id": 31,
+    "en": "snowboard",
+    "cn": "滑雪单板"
+  },
+  {
+    "id": 32,
+    "en": "sports ball",
+    "cn": "运动球"
+  },
+  {
+    "id": 33,
+    "en": "kite",
+    "cn": "风筝"
+  },
+  {
+    "id": 34,
+    "en": "baseball bat",
+    "cn": "棒球棒"
+  },
+  {
+    "id": 35,
+    "en": "baseball glove",
+    "cn": "棒球手套"
+  },
+  {
+    "id": 36,
+    "en": "skateboard",
+    "cn": "滑板"
+  },
+  {
+    "id": 37,
+    "en": "surfboard",
+    "cn": "冲浪板"
+  },
+  {
+    "id": 38,
+    "en": "tennis racket",
+    "cn": "网球拍"
+  },
+  {
+    "id": 39,
+    "en": "bottle",
+    "cn": "瓶子"
+  },
+  {
+    "id": 40,
+    "en": "wine glass",
+    "cn": "酒杯"
+  },
+  {
+    "id": 41,
+    "en": "cup",
+    "cn": "杯子"
+  },
+  {
+    "id": 42,
+    "en": "fork",
+    "cn": "叉子"
+  },
+  {
+    "id": 43,
+    "en": "knife",
+    "cn": "刀"
+  },
+  {
+    "id": 44,
+    "en": "spoon",
+    "cn": "勺子"
+  },
+  {
+    "id": 45,
+    "en": "bowl",
+    "cn": "碗"
+  },
+  {
+    "id": 46,
+    "en": "banana",
+    "cn": "香蕉"
+  },
+  {
+    "id": 47,
+    "en": "apple",
+    "cn": "苹果"
+  },
+  {
+    "id": 48,
+    "en": "sandwich",
+    "cn": "三明治"
+  },
+  {
+    "id": 49,
+    "en": "orange",
+    "cn": "橙子"
+  },
+  {
+    "id": 50,
+    "en": "broccoli",
+    "cn": "西兰花"
+  },
+  {
+    "id": 51,
+    "en": "carrot",
+    "cn": "胡萝卜"
+  },
+  {
+    "id": 52,
+    "en": "hot dog",
+    "cn": "热狗"
+  },
+  {
+    "id": 53,
+    "en": "pizza",
+    "cn": "披萨"
+  },
+  {
+    "id": 54,
+    "en": "donut",
+    "cn": "甜甜圈"
+  },
+  {
+    "id": 55,
+    "en": "cake",
+    "cn": "蛋糕"
+  },
+  {
+    "id": 56,
+    "en": "chair",
+    "cn": "椅子"
+  },
+  {
+    "id": 57,
+    "en": "couch",
+    "cn": "沙发"
+  },
+  {
+    "id": 58,
+    "en": "potted plant",
+    "cn": "盆栽"
+  },
+  {
+    "id": 59,
+    "en": "bed",
+    "cn": "床"
+  },
+  {
+    "id": 60,
+    "en": "dining table",
+    "cn": "餐桌"
+  },
+  {
+    "id": 61,
+    "en": "toilet",
+    "cn": "马桶"
+  },
+  {
+    "id": 62,
+    "en": "tv",
+    "cn": "显示屏"
+  },
+  {
+    "id": 63,
+    "en": "laptop",
+    "cn": "笔记本电脑"
+  },
+  {
+    "id": 64,
+    "en": "mouse",
+    "cn": "鼠标"
+  },
+  {
+    "id": 65,
+    "en": "remote",
+    "cn": "遥控器"
+  },
+  {
+    "id": 66,
+    "en": "keyboard",
+    "cn": "键盘"
+  },
+  {
+    "id": 67,
+    "en": "cell phone",
+    "cn": "手机"
+  },
+  {
+    "id": 68,
+    "en": "microwave",
+    "cn": "微波炉"
+  },
+  {
+    "id": 69,
+    "en": "oven",
+    "cn": "烤箱"
+  },
+  {
+    "id": 70,
+    "en": "toaster",
+    "cn": "烤面包机"
+  },
+  {
+    "id": 71,
+    "en": "sink",
+    "cn": "水槽"
+  },
+  {
+    "id": 72,
+    "en": "refrigerator",
+    "cn": "冰箱"
+  },
+  {
+    "id": 73,
+    "en": "book",
+    "cn": "书"
+  },
+  {
+    "id": 74,
+    "en": "clock",
+    "cn": "时钟"
+  },
+  {
+    "id": 75,
+    "en": "vase",
+    "cn": "花瓶"
+  },
+  {
+    "id": 76,
+    "en": "scissors",
+    "cn": "剪刀"
+  },
+  {
+    "id": 77,
+    "en": "teddy bear",
+    "cn": "泰迪熊"
+  },
+  {
+    "id": 78,
+    "en": "hair drier",
+    "cn": "吹风机"
+  },
+  {
+    "id": 79,
+    "en": "toothbrush",
+    "cn": "牙刷"
+  }
+]

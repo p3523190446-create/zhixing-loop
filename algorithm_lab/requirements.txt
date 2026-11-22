@@ -1,0 +1,4 @@
+# Project-local target; bundled Python 3.12, CPU backend.
+opencv-contrib-python-headless==4.13.0.92
+numpy==2.5.4
+psutil==7.2.2

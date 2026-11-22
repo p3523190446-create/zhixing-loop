@@ -1,0 +1,11 @@
+# USBFS接收队列恢复候选修复
+
+2026-10-20。由最后烧录的r1_usbhs_camera_bridge_usb_lifecycle复制，只修改usbfs_lifecycle.h。本目录已于2026-10-20经P9烧录并逐字节回读通过，PC P9连续120秒只读通过；手机P7/Hub未实测，不能称根因修复。
+
+已复现代码缺陷：数据接口SET_INTERFACE或SET_CONFIGURATION调用UART2_ParaInit使接收队列读写下标归零，但UEP2_DMA仍可能指向上一环形槽。之后USB包写旧槽，主循环读0槽。此项不能直接证明当前没有弹窗或历史bulkTransfer=-1的原因。
+
+候选先复位队列，再将UEP2_DMA复位到UART2_Tx_Buf[0]，最后恢复接收ACK。控制接口0不动数据队列，EP0不动，原运动租约失效处理保留。不增加自动重连或运动重放。
+
+证据：tmp/check_usb_dma_recovery.py使用实际头文件及实际UART2_ParaInit函数，在模拟寄存器中复现旧代码失败，候选31个非零起始槽各5项共155不变量通过。这不是155次实物重连。构建脚本tools/build_r1_usbfs_dma_recovery.py只编译，结果MCU_COMPILE_PASS。bin SHA256 c4ca3e61e188d0207087946db7339f20149f0173e1d7a1fc7d0facb2c30adb2e。
+
+当前仍需手机实际USB清单、授权、完整错误与网络地址。用户不方便USB接电脑；不得凭编译就刷写、称已部署或反复让用户拔插。部署、回读、持续运行及停止重连均须另验。

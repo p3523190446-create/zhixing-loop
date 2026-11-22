@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-09-26T13:15:00.297056+00:00",
+  "declared_origin": "synthetic",
+  "firmware_id": "software-example",
+  "declared_conditions": "人工输入序列；无实物测量",
+  "rows": 10,
+  "first_time_ms": 0,
+  "last_time_ms": 750,
+  "observation_span_ms": 750,
+  "new_sample_count": 9,
+  "valid_new_sample_count": 8,
+  "invalid_new_sample_count": 1,
+  "no_new_sample_rows": 1,
+  "invalid_fraction_of_new_samples": 0.1111111111111111,
+  "largest_record_interval_ms": 350,
+  "largest_valid_sample_interval_ms": 100,
+  "median_valid_sample_interval_ms": 50,
+  "initial_gap_before_first_valid_ms": 0,
+  "tail_after_last_valid_ms": 350,
+  "distance_mm": {
+    "minimum": 200,
+    "maximum": 900,
+    "median": 800.0
+  },
+  "limitations": [
+    "SYNTHETIC DATA: this report must not count as hardware test evidence.",
+    "Only input records are summarized; no guard state/output is simulated here.",
+    "Origin is a caller declaration, not independently verified hardware provenance.",
+    "No reference distance or output timestamp is present: accuracy, response time and missed alarms cannot be calculated.",
+    "Intervals describe supplied records; missing records and old values mislabeled as new cannot be ruled out.",
+    "No automatic pass/fail, award estimate or reliability claim is produced."
+  ],
+  "source_sha256": "4a6b8b762d0aa5856b3f2d562746c418fc666ca011397c0dd0b04889a45b304c",
+  "source_file": "example_trace.csv"
+}

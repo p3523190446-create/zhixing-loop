@@ -1,0 +1,92 @@
+{
+  "repository": "STMicroelectronics/Azure-cloud-samples",
+  "commit": "cf054cce5205f9049e5020927563c614461ac32b",
+  "files": [
+    {
+      "name": "vl53l0x_api.c",
+      "sha256": "8e0d6190d906ef71e5a18ced8c37719017da7f40f7e90f6a81d5589231d283ee",
+      "source": "https://raw.githubusercontent.com/STMicroelectronics/Azure-cloud-samples/cf054cce5205f9049e5020927563c614461ac32b/b-l4s5i-iot01a/iar/stm32l4xx_lib/Components/vl53l0x/vl53l0x_api.c"
+    },
+    {
+      "name": "vl53l0x_api.h",
+      "sha256": "76cb5a5d549619242882bbbca7263eb16e49d5e39ab91d9d6443deef09bbe41d",
+      "source": "https://raw.githubusercontent.com/STMicroelectronics/Azure-cloud-samples/cf054cce5205f9049e5020927563c614461ac32b/b-l4s5i-iot01a/iar/stm32l4xx_lib/Components/vl53l0x/vl53l0x_api.h"
+    },
+    {
+      "name": "vl53l0x_api_calibration.c",
+      "sha256": "89c2d143c51d5e17e297e19ba9ce597ddae190261c684f4e35832dddd67beca9",
+      "source": "https://raw.githubusercontent.com/STMicroelectronics/Azure-cloud-samples/cf054cce5205f9049e5020927563c614461ac32b/b-l4s5i-iot01a/iar/stm32l4xx_lib/Components/vl53l0x/vl53l0x_api_calibration.c"
+    },
+    {
+      "name": "vl53l0x_api_calibration.h",
+      "sha256": "3460613a0efb01efab4b21f83c52601a7af73d98c55d9545de1f82911d2b2d4c",
+      "source": "https://raw.githubusercontent.com/STMicroelectronics/Azure-cloud-samples/cf054cce5205f9049e5020927563c614461ac32b/b-l4s5i-iot01a/iar/stm32l4xx_lib/Components/vl53l0x/vl53l0x_api_calibration.h"
+    },
+    {
+      "name": "vl53l0x_api_core.c",
+      "sha256": "154aaa5d6d8ad591aa47be489dfa945eafb82cdf5b34af2f231aafbec0b7ef47",
+      "source": "https://raw.githubusercontent.com/STMicroelectronics/Azure-cloud-samples/cf054cce5205f9049e5020927563c614461ac32b/b-l4s5i-iot01a/iar/stm32l4xx_lib/Components/vl53l0x/vl53l0x_api_core.c"
+    },
+    {
+      "name": "vl53l0x_api_core.h",
+      "sha256": "f8441ba5c45562a4443c1a273fe41e0a8ffad63cad942c2525eca23542985a93",
+      "source": "https://raw.githubusercontent.com/STMicroelectronics/Azure-cloud-samples/cf054cce5205f9049e5020927563c614461ac32b/b-l4s5i-iot01a/iar/stm32l4xx_lib/Components/vl53l0x/vl53l0x_api_core.h"
+    },
+    {
+      "name": "vl53l0x_api_ranging.c",
+      "sha256": "741d7518250cd28f133b6455e492f11081ed5c79841c6a191533951e9e9f083f",
+      "source": "https://raw.githubusercontent.com/STMicroelectronics/Azure-cloud-samples/cf054cce5205f9049e5020927563c614461ac32b/b-l4s5i-iot01a/iar/stm32l4xx_lib/Components/vl53l0x/vl53l0x_api_ranging.c"
+    },
+    {
+      "name": "vl53l0x_api_ranging.h",
+      "sha256": "20384816b88d45fa14a2cf69c32b541627945ffd6126628e364da210ac48f240",
+      "source": "https://raw.githubusercontent.com/STMicroelectronics/Azure-cloud-samples/cf054cce5205f9049e5020927563c614461ac32b/b-l4s5i-iot01a/iar/stm32l4xx_lib/Components/vl53l0x/vl53l0x_api_ranging.h"
+    },
+    {
+      "name": "vl53l0x_api_strings.c",
+      "sha256": "3fba882742f0dd870a247625d9099ee32cdb52a2aed6b83a7606569f0cb999a2",
+      "source": "https://raw.githubusercontent.com/STMicroelectronics/Azure-cloud-samples/cf054cce5205f9049e5020927563c614461ac32b/b-l4s5i-iot01a/iar/stm32l4xx_lib/Components/vl53l0x/vl53l0x_api_strings.c"
+    },
+    {
+      "name": "vl53l0x_api_strings.h",
+      "sha256": "bea915ecd670b597c20c6f77a7b3af1521e607e27940ddec4181c7f741150f0c",
+      "source": "https://raw.githubusercontent.com/STMicroelectronics/Azure-cloud-samples/cf054cce5205f9049e5020927563c614461ac32b/b-l4s5i-iot01a/iar/stm32l4xx_lib/Components/vl53l0x/vl53l0x_api_strings.h"
+    },
+    {
+      "name": "vl53l0x_def.h",
+      "sha256": "62c31553fd62c34378d5f07e2d1d7a3a482b232f98a69547d9e0ad740ed8b9cc",
+      "source": "https://raw.githubusercontent.com/STMicroelectronics/Azure-cloud-samples/cf054cce5205f9049e5020927563c614461ac32b/b-l4s5i-iot01a/iar/stm32l4xx_lib/Components/vl53l0x/vl53l0x_def.h"
+    },
+    {
+      "name": "vl53l0x_device.h",
+      "sha256": "13c295a93a2cb8382ded804ff15406dd5a4731467d903a8f91219eb68a348843",
+      "source": "https://raw.githubusercontent.com/STMicroelectronics/Azure-cloud-samples/cf054cce5205f9049e5020927563c614461ac32b/b-l4s5i-iot01a/iar/stm32l4xx_lib/Components/vl53l0x/vl53l0x_device.h"
+    },
+    {
+      "name": "vl53l0x_interrupt_threshold_settings.h",
+      "sha256": "04c985d7d9249363f6682af70f37664fc2655d6f961889a9bef17f0b61dab7b5",
+      "source": "https://raw.githubusercontent.com/STMicroelectronics/Azure-cloud-samples/cf054cce5205f9049e5020927563c614461ac32b/b-l4s5i-iot01a/iar/stm32l4xx_lib/Components/vl53l0x/vl53l0x_interrupt_threshold_settings.h"
+    },
+    {
+      "name": "vl53l0x_platform_log.c",
+      "sha256": "3db74580803b39cf493fc31a8400a711affc54f23f38292bffb7564569dbf8ef",
+      "source": "https://raw.githubusercontent.com/STMicroelectronics/Azure-cloud-samples/cf054cce5205f9049e5020927563c614461ac32b/b-l4s5i-iot01a/iar/stm32l4xx_lib/Components/vl53l0x/vl53l0x_platform_log.c"
+    },
+    {
+      "name": "vl53l0x_platform_log.h",
+      "sha256": "1a97bf8705d508d5b459041eafc223150ae9bad31eb0511ba0c6f5e0f78d4f79",
+      "source": "https://raw.githubusercontent.com/STMicroelectronics/Azure-cloud-samples/cf054cce5205f9049e5020927563c614461ac32b/b-l4s5i-iot01a/iar/stm32l4xx_lib/Components/vl53l0x/vl53l0x_platform_log.h"
+    },
+    {
+      "name": "vl53l0x_tuning.h",
+      "sha256": "54477fb1dd66b35468977244e01a259c69d7baf2e153166a74fbe95312f7d4fa",
+      "source": "https://raw.githubusercontent.com/STMicroelectronics/Azure-cloud-samples/cf054cce5205f9049e5020927563c614461ac32b/b-l4s5i-iot01a/iar/stm32l4xx_lib/Components/vl53l0x/vl53l0x_tuning.h"
+    },
+    {
+      "name": "vl53l0x_types.h",
+      "sha256": "8b6b90a2ea82af024adc490078db83a28ba8508375d01bb138feb4848e9ec60f",
+      "source": "https://raw.githubusercontent.com/STMicroelectronics/Azure-cloud-samples/cf054cce5205f9049e5020927563c614461ac32b/b-l4s5i-iot01a/iar/stm32l4xx_lib/Components/vl53l0x/vl53l0x_types.h"
+    }
+  ],
+  "note": "Original ST C API with copyright/license headers retained; CH32 platform adaptation supplied separately."
+}

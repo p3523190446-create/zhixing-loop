@@ -1,0 +1,84 @@
+{
+  "connected": true,
+  "error": null,
+  "received_at": "2026-10-13T01:48:32.898153+00:00",
+  "uptime_s": 654,
+  "range_rounds": 6279,
+  "distance_mm": 43,
+  "range_valid": true,
+  "guard_state": 2,
+  "voltage_mv": null,
+  "driver_state": 0,
+  "wheel_speeds_mm_s": null,
+  "motion_active": false,
+  "motor_fault": 0,
+  "warning_mm": 120,
+  "muted": true,
+  "uart_errors": 0,
+  "uart_drops": 0,
+  "serial_source": "CH32 UART",
+  "mode": "MANUAL_GIMBAL_ONLY",
+  "gimbal": {
+    "ms": 656074,
+    "ready": 1,
+    "active": 0,
+    "mode": 5,
+    "yaw_us": 0,
+    "pitch_us": 0,
+    "starts": 1,
+    "stops": 1,
+    "yaw_hz": 1000000,
+    "pitch_hz": 1000000
+  },
+  "ultrasonic": {
+    "valid": true,
+    "status": 1,
+    "distance_mm": 379,
+    "age_ms": 36
+  },
+  "age_ms": 0,
+  "control": {
+    "active": false,
+    "state": "STOPPED",
+    "target": {
+      "yaw": 88,
+      "pitch": 37
+    },
+    "error": null,
+    "events": [
+      {
+        "at": "2026-10-13T01:43:16.536704+00:00",
+        "message": "位置已由主控接收"
+      },
+      {
+        "at": "2026-10-13T01:43:22.421829+00:00",
+        "message": "位置已由主控接收"
+      },
+      {
+        "at": "2026-10-13T01:43:23.267219+00:00",
+        "message": "位置已由主控接收"
+      },
+      {
+        "at": "2026-10-13T01:43:24.021212+00:00",
+        "message": "位置已由主控接收"
+      },
+      {
+        "at": "2026-10-13T01:43:27.036603+00:00",
+        "message": "位置已由主控接收"
+      },
+      {
+        "at": "2026-10-13T01:43:28.698070+00:00",
+        "message": "位置已由主控接收"
+      },
+      {
+        "at": "2026-10-13T01:46:21.467486+00:00",
+        "message": "停止已由主控确认"
+      },
+      {
+        "at": "2026-10-13T01:46:22.151714+00:00",
+        "message": "停止已由主控确认"
+      }
+    ]
+  },
+  "link_age_ms": 0
+}

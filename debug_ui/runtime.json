@@ -1,0 +1,12 @@
+{
+  "pid": 22732,
+  "bind": "0.0.0.0",
+  "port": 8795,
+  "base": "/-EkPeOg3Z3zePaJPwNnaX0fQ",
+  "demo": false,
+  "url": "http://127.0.0.1:8795/-EkPeOg3Z3zePaJPwNnaX0fQ/desktop",
+  "desktop": "http://127.0.0.1:8795/-EkPeOg3Z3zePaJPwNnaX0fQ/desktop",
+  "mobile": "http://127.0.0.1:8795/-EkPeOg3Z3zePaJPwNnaX0fQ/mobile",
+  "transport": "PC_P9",
+  "service_runtime": "C:\\Users\\panyuanhao\\Documents\\ChatGPT\\比赛项目计划\\output\\onboard_dashboard\\pc-speed-20261021\\runtime.json"
+}

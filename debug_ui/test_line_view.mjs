@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {lineView} from './assets/features/line.js';
+const white=[220,246,251,248,249,258,258,226],black=[3145,3452,3456,3414,3331,3352,3357,2969];
+const view=(raw,mask,extra={})=>lineView({connected:true,line:{valid:true,age_ms:10,raw,digital_mask:mask,...extra}});
+assert.equal(view(white,255).state,'no_line');assert.equal(view(black,0).state,'all_black');
+let raw=white.slice();raw[0]=black[0];assert.equal(view(raw,254).position,-1);
+raw=white.slice();raw[7]=black[7];assert.equal(view(raw,127).position,1);
+raw=white.slice();raw[3]=black[3];raw[4]=black[4];assert.ok(Math.abs(view(raw,231).position)<1e-10);
+assert.equal(view(black,126).state,'multiple');assert.equal(view(black,126).position,null);
+assert.equal(view(white,255,{age_ms:1500}).valid,false);
+assert.equal(view(white,255,{valid:false}).valid,false);
+assert.equal(view(white.slice(1),255).valid,false);
+raw=white.slice();raw[2]=NaN;assert.equal(view(raw,255).valid,false);
+assert.equal(lineView({connected:false}).valid,false);
+const html=fs.readFileSync(new URL('./index.html',import.meta.url),'utf8');
+assert.equal((html.match(/data-line-channel=/g)||[]).length,8);
+console.log('PASS: line view real calibration / endpoints / center / split regions / stale / malformed');

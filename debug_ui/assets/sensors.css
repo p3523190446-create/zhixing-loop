@@ -1,0 +1,104 @@
+/* Shared sensor instruments, using the console's dark navy palette. */
+.imu-observer{margin-top:12px;padding-top:12px;border-top:1px solid #2a3b4d}
+.imu-observer[hidden]{display:none}
+.imu-observer-values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.imu-observer-values span{display:block;font-size:9px;color:#8ca6c2}
+.imu-observer-values strong{display:block;margin-top:5px;font:500 20px ui-monospace,Consolas,monospace;color:#d3e7ff}
+.imu-observer p{margin:12px 0 5px;font-size:11px;color:#bdd7f0}
+.imu-observer>small{display:block;font-size:9px;line-height:1.7;color:#7895b1}
+.sensor-section{margin:26px 0 18px}
+.sensor-section-heading{display:flex;align-items:center;justify-content:space-between;margin:0 2px 13px;gap:14px}
+.sensor-section-heading h2{font-size:13px;font-weight:600;letter-spacing:.06em;color:#c7d6e7}
+.sensor-section-heading span{font-size:10px;color:#6e849d}
+.sensor-section-heading>div{display:flex;align-items:center;gap:9px}
+.sensor-section-heading svg{width:15px;height:15px;stroke:#7fbbcd;fill:none;stroke-width:1.4}
+.sensor-deck{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px;align-items:stretch}
+.sensor-deck:not(.has-imu){grid-template-columns:1fr}
+.sensor-deck>.sensor-card{position:relative;display:flex;flex-direction:column;min-width:0;margin:0;padding:22px;border-radius:15px;overflow:hidden;border:1px solid #304052;background:radial-gradient(ellipse at 100% 0,rgba(var(--sensor-rgb),.055),transparent 62%),linear-gradient(145deg,#192331,#111c28);box-shadow:0 8px 26px #00000015,inset 0 1px #ffffff05}
+.sensor-card:before{content:"";position:absolute;top:20px;left:0;width:3px;height:33px;border-radius:0 3px 3px 0;background:var(--sensor-accent);box-shadow:0 0 16px rgba(var(--sensor-rgb),.16)}
+.sensor-header{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:42px}
+.sensor-title{display:flex;gap:11px;align-items:center;min-width:0}
+.sensor-icon{display:grid;place-items:center;flex-shrink:0;width:35px;height:35px;border:1px solid rgba(var(--sensor-rgb),.18);border-radius:10px;background:rgba(var(--sensor-rgb),.055);color:var(--sensor-accent)}
+.sensor-icon svg{height:19px;width:19px;stroke:currentColor;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.sensor-title h2{font-size:15px;font-weight:600;color:#e1eaf4;line-height:1.35;letter-spacing:.02em}
+.sensor-title small{display:block;color:#6f8aa3;font-size:9px;margin-top:4px;letter-spacing:.035em}
+.sensor-status{display:inline-flex;align-items:center;flex-shrink:0;gap:5px;font-size:9px;color:#a6bed1;padding:5px 8px;border:1px solid #34495a;border-radius:20px;background:#142330;white-space:nowrap}
+.sensor-status:before{content:"";width:4px;height:4px;border-radius:50%;background:#71869c}
+.sensor-card[data-status=live] .sensor-status{color:var(--sensor-accent);border-color:rgba(var(--sensor-rgb),.25);background:rgba(var(--sensor-rgb),.06)}
+.sensor-card[data-status=live] .sensor-status:before{background:var(--sensor-accent);box-shadow:0 0 8px rgba(var(--sensor-rgb),.3)}
+
+.line-card{--sensor-accent:#7ce5cd;--sensor-rgb:124,229,205}
+.line-channels{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:7px;margin-top:24px}
+.line-channels>div{position:relative;display:flex;min-width:0;flex-direction:column;align-items:center;gap:7px;padding:13px 1px 11px;border:1px solid #304454;border-radius:10px;background:linear-gradient(180deg,#1a2937,#15212d);color:#a2b4c5;transition:background .2s,border-color .2s,box-shadow .2s}
+.line-channels b{font:10px ui-monospace,Consolas,monospace;letter-spacing:.07em;color:#9aafc1}
+.line-channels small{font:11px ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums;color:#b4c9d8}
+[data-line-color]{font-size:10px;color:#91a6b9}
+.line-well{position:relative;display:block;height:43px;width:64%;overflow:hidden;border-radius:5px;background:#0b1621;box-shadow:inset 0 1px 7px #0005;border:1px solid #263d4b}
+.line-well i{position:absolute;bottom:0;left:0;right:0;background:#497888;transition:height .18s}
+.line-channels .is-black{background:linear-gradient(180deg,#204b49,#173631);border-color:#58bba4;box-shadow:0 0 0 1px #7ce5cd0a,inset 0 1px #b5ffe115,0 3px 20px #55d8b80d}
+.line-channels .is-black b,.line-channels .is-black small,.line-channels .is-black [data-line-color]{color:#b3f5dd}
+.line-channels .is-black .line-well{border-color:#3e8b77;background:#122e2b}
+.line-channels .is-black .line-well i{background:linear-gradient(0deg,#4eaf96,#a1efd4);box-shadow:0 -3px 12px #7ce5cd44}
+.line-channels .is-offline{opacity:.48;box-shadow:none}
+.line-axis{display:flex;align-items:center;gap:10px;margin-top:25px;color:#7f99ac;font:10px ui-monospace,Consolas,monospace}
+.line-track{height:6px;position:relative;flex:1;border-radius:4px;background:linear-gradient(90deg,#27414b,#24463f 50%,#27414b);border:1px solid #3a555c}
+.line-track:after{content:"";position:absolute;left:50%;top:-5px;height:14px;border-left:1px solid #6d969d}
+.line-track i{position:absolute;top:50%;width:12px;height:12px;background:#a7f3d5;border:2px solid #173b32;border-radius:50%;transform:translate(-50%,-50%);z-index:1;box-shadow:0 0 0 3px #7ce5cd13,0 0 12px #7ce5cd55;transition:left .18s}
+.line-track i[hidden]{display:none}
+.line-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding-top:20px}
+.line-summary #linePosition{color:#d6eee7;font-size:13px;font-weight:500;margin:5px 0 0}
+.line-summary .line-readout-label{font-size:9px;color:#6f8e9e;letter-spacing:.06em}
+.line-offset{text-align:right;color:#8da9b7;white-space:nowrap}
+.line-offset strong{font:500 34px ui-monospace,Consolas,monospace;color:#c0f4e1;letter-spacing:-.05em}
+.line-offset>span{font-size:9px;margin-left:6px}
+.line-legend{display:flex;align-items:center;gap:6px;color:#8aa5b5;font-size:10px;margin-top:12px}
+.line-legend i{width:6px;height:6px;border-radius:50%;background:#7ce5cd;box-shadow:0 0 8px #7ce5cd33}
+.line-legend .line-count{margin-left:auto;font:10px ui-monospace,Consolas,monospace;color:#7e9aa8}
+
+.imu-card{--sensor-accent:#8bbff6;--sensor-rgb:139,191,246}
+.imu-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.imu-instrument{min-width:0;padding:14px 14px 12px;border:1px solid #304558;border-radius:11px;background:linear-gradient(155deg,#1c2d40,#142332);color:#c3d8ee;box-shadow:inset 0 1px #ffffff04}
+.imu-instrument>span{font-size:11px;color:#95afca;letter-spacing:.03em}
+.imu-instrument strong{display:block;min-height:43px;margin:8px 0 2px;font:500 31px ui-monospace,"SFMono-Regular",Consolas,monospace;letter-spacing:-.05em;color:#e2efff;font-variant-numeric:tabular-nums}
+.imu-level{position:relative;height:88px;overflow:hidden;margin:4px 0;background:radial-gradient(ellipse at 50% 65%,#75aef012,transparent 70%)}
+.imu-level:before{content:"";position:absolute;left:5%;right:5%;top:50%;border-top:1px dashed #456480}
+.imu-level:after{content:"";position:absolute;left:50%;top:12%;bottom:12%;border-left:1px solid #294258}
+.imu-level i{position:absolute;left:50%;top:50%;width:70%;max-width:160px;height:8px;border:1px solid #a9d3ff88;border-radius:5px;background:linear-gradient(90deg,#4e85b6,#b4dcff,#5e9acb);box-shadow:0 0 17px #8bbff633;transition:transform .2s;z-index:1}
+.imu-level i:before,.imu-level i:after{content:"";position:absolute;bottom:-6px;width:12px;height:4px;border-radius:2px;background:#799ebd}
+.imu-level i:before{left:9%}.imu-level i:after{right:9%}
+.imu-level i[hidden]{display:none}
+.imu-ends{display:flex;justify-content:space-between;font-size:9px;color:#708fae}
+.imu-instrument output{display:block;min-height:18px;margin-top:11px;color:#b1cde5;font-size:11px;font-weight:500}
+.imu-card .sensor-footnote{margin-top:14px;color:#7791ab;font-size:10px;line-height:1.6}
+.imu-card #imuAge{margin-top:5px;font:9px ui-monospace,Consolas,monospace;color:#68839f}
+.imu-compat-action{padding:9px 12px;margin-top:8px;background:#263952;border:1px solid #57799e;border-radius:7px;color:#c6e2ff;font-size:11px}.imu-compat-action[hidden]{display:none}
+.imu-details{font-size:10px;margin-top:12px;padding-top:10px;border-top:1px solid #2a3b4d;color:#8ca6c2}
+.imu-details summary{cursor:pointer;color:#9db6d1}.imu-details p{line-height:1.7;color:#8aa0b9}
+.imu-card[data-status=attention] .sensor-status{color:#e5c18b;border-color:#63533a;background:#352d224d}
+.imu-card[data-status=attention] .sensor-status:before{background:#e5c18b;box-shadow:none}
+.imu-card[data-status=offline] .imu-instrument strong{color:#6b8298}
+
+body.mobile-preview .sensor-deck{grid-template-columns:1fr}
+@media(max-width:1050px){.sensor-deck{grid-template-columns:1fr}.sensor-section{margin-top:20px}.sensor-deck>.sensor-card{padding:20px}.line-summary{padding-top:20px}}
+@media(max-width:500px){.sensor-section-heading{margin-bottom:11px}.sensor-section-heading>span{display:none}.sensor-deck{gap:12px}.sensor-deck>.sensor-card{padding:16px}.sensor-title h2{font-size:14px}.sensor-icon{height:32px;width:32px}.sensor-status{padding:4px 7px;font-size:8px}.line-channels{gap:4px;margin-top:18px}.line-channels>div{padding:10px 0 9px;gap:6px;border-radius:7px}.line-channels small{font-size:9px}.line-channels b{font-size:9px}.line-well{height:35px;width:68%}.line-summary{padding-top:16px}.line-summary small{display:none}.imu-grid{gap:8px;margin-top:16px}.imu-instrument{padding:11px 11px 10px}.imu-instrument strong{font-size:29px}.imu-level{height:86px}}
+@media(prefers-reduced-motion:reduce){.sensor-deck *{transition:none!important}}
+
+.line-task-plan{margin-top:15px;padding-top:12px;border-top:1px solid #304454;color:#9ab6c4;font-size:11px}
+.line-calibration{margin-top:18px;padding:14px;border:1px solid #39665e;border-radius:10px;background:#142f2d55;color:#b7d8cf;font-size:11px}
+.line-calibration[hidden]{display:none}.line-calibration summary{cursor:pointer;font-weight:600;line-height:1.8}.line-calibration summary span{display:inline-block;margin-left:5px;padding:0 6px;border-radius:9px;background:#354333;color:#dfd4aa;font-size:9px}.line-calibration summary span[data-ready=true]{background:#205447;color:#acf1d6}
+.line-calibration p{font-size:11px;line-height:1.8;margin:10px 0}.line-calibration small{display:block;color:#8eaaa3;font-size:10px;line-height:1.7;margin-top:10px}
+.line-cal-steps{display:flex;list-style:none;gap:5px;padding:0;counter-reset:step}.line-cal-steps li{flex:1;min-width:0;padding:8px 3px;text-align:center;font-size:10px;border-bottom:2px solid #35534f;color:#98afa9}.line-cal-steps li.is-done{border-color:#78d7b5;color:#b9f0d6}
+.line-cal-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.line-cal-actions button,.line-calibration>button{font-size:11px;min-height:40px;padding:8px 3px;border-radius:7px;border:1px solid #558878;background:#21463c;color:#d0f3e2}.line-cal-actions button:disabled{opacity:.38}.line-calibration>button{background:transparent;min-height:32px;padding:4px 12px}.line-calibration progress{display:block;width:100%;height:6px;margin:12px 0;accent-color:#7ce5cd}.line-calibration progress[hidden],.line-calibration>button[hidden]{display:none}
+@media(max-width:360px){.line-cal-actions{grid-template-columns:1fr}.line-calibration{padding:10px}}
+.line-task-plan summary{cursor:pointer;color:#b6d8d0;font-size:11px}
+.line-task-fields{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:9px;margin:13px 0}
+.line-task-fields label{min-width:0;color:#88a4b6;font-size:10px}
+.line-task-fields select{display:block;width:100%;min-width:0;margin-top:6px;padding:8px 4px;background:#142330;border:1px solid #35515a;border-radius:6px;color:#c5e5dd;font-size:11px}
+.line-task-plan p{font-size:10px;margin:9px 0;color:#9bb8c7;line-height:1.6}
+.line-task-plan small{display:block;color:#718d9e;font-size:9px;line-height:1.7}
+@media(max-width:400px){.line-task-fields{grid-template-columns:1fr}.line-task-fields select{font-size:12px}}
+
+.line-task-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+.line-task-actions{display:flex;gap:8px}.line-task-actions button{padding:9px 12px;border:1px solid #487a6f;border-radius:7px;background:#183c35;color:#c8f1e0;font-size:11px}
+.line-task-actions #stopLineTask{background:#33262b;border-color:#60434a;color:#e7bec4}.line-task-actions button:disabled{opacity:.4;cursor:not-allowed}
+@media(max-width:360px){.line-task-fields{grid-template-columns:1fr}}

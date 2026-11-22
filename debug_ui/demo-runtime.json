@@ -1,0 +1,10 @@
+{
+  "pid": 48600,
+  "bind": "127.0.0.1",
+  "port": 8793,
+  "base": "/wdmcSQ_x7UYE0Q-kcTNRBjl_",
+  "demo": true,
+  "url": "http://127.0.0.1:8793/wdmcSQ_x7UYE0Q-kcTNRBjl_/",
+  "desktop": "http://127.0.0.1:8793/wdmcSQ_x7UYE0Q-kcTNRBjl_/desktop",
+  "mobile": "http://127.0.0.1:8793/wdmcSQ_x7UYE0Q-kcTNRBjl_/mobile"
+}

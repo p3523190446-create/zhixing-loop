@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111b1c">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23244238'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-size='44' fill='%23a9e4c3'%3E知%3C/text%3E%3C/svg%3E">
+  <title>知行回路 · 调试台</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <a class="brand" href="#live" aria-label="知行回路首页"><span class="brand-icon">知</span><span><strong>知行回路</strong><small>CH32 主控 · 调试台</small></span></a>
+    <div class="header-status"><span id="connection" class="badge">等待连接</span><span id="viewLabel" class="view-label">自动适配</span></div>
+    <button type="button" data-stop class="button danger header-stop">停止云台</button>
+  </header>
+  <main>
+    <div class="notice" id="onboardNotice">网页由小手机运行 · 状态与原始记录已接入 · 云台、相机接入中</div>
+    <div id="demoNotice" class="notice demo" hidden>演示模式 · 所有数据和指令均为模拟，不连接实物。</div>
+    <div id="notice" class="notice" role="status" aria-live="polite">正在读取主控状态…</div>
+    <nav class="tabs" aria-label="调试功能">
+      <button type="button" data-tab="live" aria-selected="true"><span class="tab-icon">◉</span>画面与控制</button>
+      <button type="button" data-tab="telemetry" aria-selected="false"><span class="tab-icon">▥</span>运行状态</button>
+      <button type="button" data-tab="records" aria-selected="false"><span class="tab-icon">▷</span>记录回放</button>
+    </nav>
+    <section data-panel="live" aria-label="画面与控制">
+      <div class="quick-stats">
+        <div><span>原测距</span><strong data-metric="distance">—</strong><small>cm</small></div>
+        <div><span>超声波</span><strong data-metric="ultra">—</strong><small>cm</small></div>
+        <div><span>电池电压</span><strong data-metric="voltage">—</strong><small>V</small></div>
+        <div><span>车辆许可</span><strong class="locked">禁用</strong><small>当前固件</small></div>
+      </div>
+      <div class="workspace">
+        <section class="card camera-card" id="cameraCard">
+          <div class="card-heading"><div><span class="eyebrow">LIVE VIEW</span><h1>外接摄像头</h1></div><span id="cameraState" class="badge">画面未开启</span></div>
+          <div class="camera-view"><img id="cameraImage" alt="外接摄像头实时画面" hidden><div id="cameraPlaceholder" class="placeholder"><span class="camera-mark">◎</span><strong>等待外接画面</strong><span>开启后查看云台上的摄像头</span></div><span class="image-tag">实时预览</span></div>
+          <div id="cameraMeta" class="muted camera-meta">目标帧率与实际预览帧率分别显示</div>
+          <div class="camera-settings"><label>清晰度<select id="cameraResolution"><option value="320x240">320×240 · 流畅</option><option value="640x480" selected>640×480 · 标准</option><option value="1280x720">1280×720 · 720P</option><option value="1920x1080">1920×1080 · 1080P</option></select></label><label>目标帧率<select id="cameraFps"><option value="5">5 帧/秒</option><option value="10">10 帧/秒</option><option value="15" selected>15 帧/秒</option><option value="20">20 帧/秒</option><option value="30">30 帧/秒</option></select></label></div>
+          <div class="button-row"><button id="startCamera" class="button">开启画面</button><button id="stopCamera" class="button secondary" disabled>关闭画面</button></div>
+          <div class="record-strip"><span id="liveRecordBadge" class="muted">未录像</span><button data-record-start class="button secondary compact" disabled>开始记录</button><button data-record-stop class="button secondary compact" disabled>停止并保存</button></div>
+          <p class="hint">画质与帧率选择后自动应用；录像中切换会保存旧段并续录。</p>
+        </section>
+        <section class="card control-card" id="gimbalCard">
+          <div class="card-heading"><div><span class="eyebrow">GIMBAL CONTROL</span><h2>双轴云台</h2></div><span id="gimbalState" class="badge">等待主控</span></div>
+          <div class="button-row"><button id="startControl" class="button" disabled>开启云台控制</button><button id="centerControl" class="button secondary" disabled>回到中间</button></div>
+          <div class="stick-layout"><div id="joystick" class="stick-pad" role="group" aria-label="二维云台摇杆" aria-disabled="true" tabindex="0"><span class="stick-label up">上</span><span class="stick-label down">下</span><span class="stick-label left">左</span><span class="stick-label right">右</span><div id="stickThumb" class="stick-thumb"></div></div><div class="stick-options"><label>可用幅度<select id="amplitude"><option value="40">40% · 小幅</option><option value="60" selected>60% · 默认</option><option value="80">80% · 逐步试探</option><option value="100">100% · 程序上限</option></select></label><p class="hint">拖动同时调整两轴，松手保持。方向键每次微调 5 单位。</p><div id="stickNote" class="muted">等待开启控制</div></div></div>
+          <div class="axis"><label for="yaw">水平指令 <output id="yawValue">0</output></label><input id="yaw" type="range" min="-60" max="60" value="0" disabled><div class="axis-labels"><span data-limit-low>−60</span><span>中间</span><span data-limit-high>+60</span></div></div>
+          <div class="axis"><label for="pitch">俯仰指令 <output id="pitchValue">0</output></label><input id="pitch" type="range" min="-60" max="60" value="0" disabled><div class="axis-labels"><span data-limit-low>−60</span><span>中间</span><span data-limit-high>+60</span></div></div>
+          <div class="nudge"><button class="button secondary" data-axis="yaw" data-step="-5" disabled>左 −5</button><button class="button secondary" data-axis="yaw" data-step="5" disabled>右 +5</button><button class="button secondary" data-axis="pitch" data-step="-5" disabled>上 −5</button><button class="button secondary" data-axis="pitch" data-step="5" disabled>下 +5</button></div>
+          <div id="gimbalFeedback" class="feedback" role="status">页面打开不会自动动作，开启后才接受调整。</div><div id="controlEvent" class="hint"></div>
+          <p class="hint">数值是位置指令，不是实测角度；机械极限待校准。停止脉冲不切断舵机电源。</p>
+        </section>
+      </div>
+    </section>
+    <section data-panel="telemetry" aria-label="运行状态" hidden>
+      <div class="section-heading"><div><span class="eyebrow">TELEMETRY</span><h2>主控回传状态</h2></div><span id="fresh" class="muted">等待数据</span></div>
+      <div class="metric-grid">
+        <section class="card metric"><span>原测距模块</span><div><strong data-metric="distance">—</strong><small>cm</small></div><p id="guard" class="muted">等待有效测距</p></section>
+        <section class="card metric"><span>超声波</span><div><strong data-metric="ultra">—</strong><small>cm</small></div><p id="ultraNote" class="muted">等待有效测距</p></section>
+        <section class="card metric"><span>电池电压</span><div><strong data-metric="voltage">—</strong><small>V</small></div><p class="muted">驱动板回报值</p></section>
+        <section class="card metric"><span>预警距离</span><div><strong data-metric="warning">—</strong><small>cm</small></div><p id="sound" class="muted">声音状态未知</p></section>
+      </div>
+      <div class="telemetry-layout"><section class="card"><div class="card-heading"><h2>距离趋势</h2><span class="muted">最近 60 次更新</span></div><canvas id="plot" aria-label="原测距距离趋势" role="img"></canvas><p id="plotNote" class="hint">等待有效距离</p></section><section class="card"><div class="card-heading"><h2>四轮反馈</h2><span class="muted">mm/s</span></div><div class="wheels"><div><span>M1 · 左前</span><strong id="m1">—</strong></div><div><span>M3 · 右前</span><strong id="m3">—</strong></div><div><span>M2 · 左后</span><strong id="m2">—</strong></div><div><span>M4 · 右后</span><strong id="m4">—</strong></div></div><p class="hint">编码器折算轮速，不能直接当成实际地面车速。</p></section></div>
+      <section class="card module-card"><h2>模块与反馈</h2><dl class="module-grid"><div><dt>运行时间</dt><dd id="uptime">—</dd></div><div><dt>电机反馈</dt><dd id="driver">—</dd></div><div><dt>主控锁存故障</dt><dd id="fault">—</dd></div><div><dt>驱动串口</dt><dd id="uart">—</dd></div></dl><p class="hint">CH32 审核最终运动许可；当前调试接口不开放车辆运动。</p></section>
+    </section>
+    <section data-panel="records" aria-label="记录回放" hidden>
+      <div class="section-heading"><div><span class="eyebrow">RECORD & REPLAY</span><h2>记录与运行回放</h2></div><span id="recordBadge" class="badge">未记录</span></div>
+      <div class="replay-layout"><section class="card"><h2>保存运行记录</h2><p class="muted">每次主控查询、原始回复、异常和网页操作保存在小手机，保留中断标记。</p><div id="recordInfo" class="record-info">等待开始</div><div class="button-row"><button data-record-start class="button" disabled>开始记录</button><button data-record-stop class="button secondary" disabled>停止并保存</button></div><p class="hint">原始通信持续记录；回到桌面后继续。剩余存储不足64MB时停止并提示，不会自动删除旧记录。</p><div id="recordMessage" class="feedback" role="status"></div></section><section class="card"><h2>已保存记录</h2><label>记录列表<select id="recordList"><option value="">暂无记录</option></select></label><div class="button-row"><button id="refreshRecords" class="button secondary">刷新记录</button><button id="loadReplay" class="button">查看状态回放</button></div><p class="hint">回放仅查看历史，播放和拖动时间轴不会向实物发控制指令。</p></section></div>
+      <section id="replayView" class="card replay-card" hidden><div class="card-heading"><h2>历史回放</h2><span class="badge">历史数据</span></div><img id="replayImage" class="replay-image" alt="历史记录画面" hidden><label for="replayTimeline">回放时间 <output id="replayTime">0.00 秒</output></label><input id="replayTimeline" type="range" min="0" max="1" step="0.01" value="0"><div class="button-row"><button id="playReplay" class="button">播放</button><button id="pauseReplay" class="button secondary">暂停</button></div><div id="replayStats" class="feedback">等待回放</div></section>
+    </section>
+    <details id="diagnosticLogs" class="card diagnostics"><summary>诊断日志 <span>排查时展开</span></summary><p id="rawLogInfo" class="muted">等待服务日志状态</p><dl class="diagnostic-fields"><div><dt>记录会话</dt><dd id="diagnosticId">—</dd></div><div><dt>事件 / 分段</dt><dd id="diagnosticCounts">—</dd></div><div><dt>最近通信错误</dt><dd id="diagnosticError">—</dd></div></dl><p class="hint">原始发送、接收字节与解析显示分开保存。发送成功不代表主控已执行，需检查回执。</p></details>
+    <footer>CH32 主控 · 电脑 / 手机共用功能模块 <a href="desktop">电脑版</a><a href="mobile">手机版</a><a href="./">自动适配</a></footer>
+  </main>
+  <div class="mobile-stop"><button data-stop class="button danger">停止云台</button><span>停止需主控回执</span></div>
+  <script type="module" src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="cn.zhixing.dashboard" android:versionCode="26" android:versionName="0.26">
+  <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="28" />
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <uses-permission android:name="android.permission.CAMERA" />
+  <uses-feature android:name="android.hardware.usb.host" android:required="false" />
+  <application android:label="知行回路调试台" android:usesCleartextTraffic="true" android:debuggable="true" android:allowBackup="false" android:theme="@android:style/Theme.Material.Light.NoActionBar">
+    <activity android:name=".MainActivity" android:exported="true" android:launchMode="singleTask"><intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter></activity>
+    <activity android:name=".DiagnosticActivity" android:exported="false" />
+    <service android:name=".GatewayService" android:exported="false" />
+    <service android:name=".TelemetryService" android:exported="false" />
+  </application>
+</manifest>

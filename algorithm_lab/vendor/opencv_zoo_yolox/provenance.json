@@ -1,0 +1,16 @@
+{
+  "repository": "https://github.com/opencv/opencv_zoo",
+  "commit": "48b10fa505aeb51fbd127fc60a5c660040e823b7",
+  "license": "Apache-2.0",
+  "model": "object_detection_yolox_2022nov.onnx",
+  "size": 35858002,
+  "sha256": "c5c2d13e59ae883e6af3b45daea64af4833a4951c92d116ec270d9ddbe998063",
+  "source_files": {
+    "yolox.py": "c99d8f103d93d27d0fb1807c7b91cb32d2d6c4959326cb88c801f17d00468f84",
+    "LICENSE": "0ec3668d3274bcf29e8a29e9576d5a2cd96fc78d3c5bec4387355a796e5d9088",
+    "README.md": "389c9198224f76b1b662902efcd5d563cb748baf2b22b304670dc12eb75fab9d",
+    "demo.py": "44295a9a9616fd1d8dcb7ebf337f655d85db8e8e9413ca1d2e8a9891549c68d6"
+  },
+  "model_url": "https://media.githubusercontent.com/media/opencv/opencv_zoo/48b10fa505aeb51fbd127fc60a5c660040e823b7/models/object_detection_yolox/object_detection_yolox_2022nov.onnx",
+  "source_modified": false
+}

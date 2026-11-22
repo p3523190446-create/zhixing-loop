@@ -1,0 +1,80 @@
+{
+  "connected": true,
+  "error": null,
+  "received_at": "2026-10-13T10:22:37.790613+08:00",
+  "uptime_s": 1996,
+  "range_rounds": 19134,
+  "distance_mm": 38,
+  "range_valid": true,
+  "guard_state": 2,
+  "voltage_mv": null,
+  "driver_state": 0,
+  "wheel_speeds_mm_s": null,
+  "motion_active": false,
+  "motor_fault": 0,
+  "warning_mm": 120,
+  "muted": true,
+  "uart_errors": 0,
+  "uart_drops": 0,
+  "serial_source": "CH32 UART",
+  "mode": "MANUAL_GIMBAL_ONLY",
+  "gimbal": {
+    "ms": 2001764,
+    "ready": 1,
+    "active": 1,
+    "mode": 5,
+    "yaw_us": 1500,
+    "pitch_us": 1500,
+    "starts": 5,
+    "stops": 4,
+    "yaw_hz": 1000000,
+    "pitch_hz": 1000000
+  },
+  "ultrasonic": {
+    "valid": true,
+    "status": 1,
+    "distance_mm": 117,
+    "age_ms": 28
+  },
+  "age_ms": 688,
+  "control": {
+    "active": true,
+    "state": "MANUAL",
+    "target": {
+      "yaw": 0,
+      "pitch": 0
+    },
+    "error": null,
+    "events": [
+      {
+        "at": "2026-10-13T10:20:06.955681+08:00",
+        "message": "手动控制已开启，回到中间位置"
+      },
+      {
+        "at": "2026-10-13T10:20:19.455473+08:00",
+        "message": "位置已由主控接收"
+      },
+      {
+        "at": "2026-10-13T10:21:28.273655+08:00",
+        "message": "回中已由主控接收"
+      }
+    ]
+  },
+  "camera": {
+    "running": true,
+    "valid": true,
+    "seq": 5287,
+    "age_ms": 31,
+    "fps": 19.5,
+    "width": 1920,
+    "height": 1080,
+    "resolution": "1920x1080",
+    "requested_fps": 30,
+    "dimensions_verified": true,
+    "device": "HDI Webcam USB",
+    "error": null,
+    "source": "External USB 145F:02EC",
+    "recording": false
+  },
+  "link_age_ms": 188
+}

@@ -1,0 +1,10 @@
+{
+  "pid": 61996,
+  "serial": "COM5",
+  "bind": "127.0.0.1",
+  "port": 8766,
+  "url": "http://127.0.0.1:8766/nsJUvSk5BNwQaQKOrGM2PuoL/",
+  "mode": "PC_MANUAL_GIMBAL",
+  "started_at": "2026-10-13T03:09:03.226744+00:00",
+  "vehicle_motion": "DISABLED"
+}

@@ -1,0 +1,16 @@
+{
+  "repository": "https://github.com/nihui/ncnn-android-yolov8",
+  "tag": "20260527.f1ac75e",
+  "source_files": [
+    "app/src/main/jni/ndkcamera.cpp",
+    "app/src/main/jni/ndkcamera.h",
+    "app/src/main/jni/yolov8.cpp",
+    "app/src/main/jni/yolov8.h",
+    "app/src/main/jni/yolov8_cls.cpp",
+    "app/src/main/jni/yolov8_det.cpp",
+    "app/src/main/jni/yolov8_obb.cpp",
+    "app/src/main/jni/yolov8_pose.cpp",
+    "app/src/main/jni/yolov8_seg.cpp",
+    "app/src/main/jni/yolov8ncnn.cpp"
+  ]
+}

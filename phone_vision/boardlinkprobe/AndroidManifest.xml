@@ -1,0 +1,9 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="cn.zhixing.boardlinkprobe" android:versionCode="10" android:versionName="0.10">
+  <uses-sdk android:minSdkVersion="24" android:targetSdkVersion="28" />
+  <uses-feature android:name="android.hardware.usb.host" android:required="false" />
+  <application android:label="知行回路主控自检" android:debuggable="true" android:allowBackup="false" android:theme="@android:style/Theme.Material.Light.NoActionBar">
+    <activity android:name=".MainActivity" android:exported="true" android:launchMode="singleTask">
+      <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
+    </activity>
+  </application>
+</manifest>

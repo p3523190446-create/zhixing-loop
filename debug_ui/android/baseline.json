@@ -1,0 +1,8 @@
+{
+  "source": "carconsole0.2 verified baseline",
+  "hashes": {
+    "TelemetryService.java": "eab9ee13cfc9637b4fed6d5e5d932c9b3c06efeb1ecfa3a3f592617ed50271cb",
+    "MainActivity.java": "09550f19a3f024748595694c7e67b1129da218aa21fe2286bb91f49ccdc53288"
+  },
+  "note": "Independent package; original carconsole sources untouched"
+}

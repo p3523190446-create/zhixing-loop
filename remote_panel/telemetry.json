@@ -1,0 +1,122 @@
+{
+  "connected": true,
+  "error": null,
+  "received_at": "2026-10-13T04:40:05.626076+00:00",
+  "uptime_s": 1308,
+  "range_rounds": 12835,
+  "distance_mm": 105,
+  "range_valid": true,
+  "guard_state": 1,
+  "voltage_mv": null,
+  "driver_state": 0,
+  "wheel_speeds_mm_s": null,
+  "motion_active": false,
+  "motor_fault": 0,
+  "warning_mm": 120,
+  "muted": true,
+  "uart_errors": 0,
+  "uart_drops": 0,
+  "serial_source": "CH32 UART",
+  "mode": "MANUAL_GIMBAL_ONLY",
+  "gimbal": {
+    "ms": 1309534,
+    "ready": 1,
+    "active": 0,
+    "mode": 0,
+    "yaw_us": 0,
+    "pitch_us": 0,
+    "starts": 0,
+    "stops": 0,
+    "yaw_hz": 1000000,
+    "pitch_hz": 1000000
+  },
+  "ultrasonic": {
+    "valid": true,
+    "status": 1,
+    "distance_mm": 23,
+    "age_ms": 55
+  },
+  "age_ms": 0,
+  "control": {
+    "active": false,
+    "state": "STOPPED",
+    "target": {
+      "yaw": 1,
+      "pitch": 1
+    },
+    "error": null,
+    "events": [
+      {
+        "at": "2026-10-13T03:15:03.731281+00:00",
+        "message": "位置已由主控接收"
+      },
+      {
+        "at": "2026-10-13T03:15:06.084258+00:00",
+        "message": "位置已由主控接收"
+      },
+      {
+        "at": "2026-10-13T03:15:10.172960+00:00",
+        "message": "位置已由主控接收"
+      },
+      {
+        "at": "2026-10-13T03:15:10.925332+00:00",
+        "message": "位置已由主控接收"
+      },
+      {
+        "at": "2026-10-13T03:15:11.775187+00:00",
+        "message": "位置已由主控接收"
+      },
+      {
+        "at": "2026-10-13T03:15:12.764369+00:00",
+        "message": "位置已由主控接收"
+      },
+      {
+        "at": "2026-10-13T03:17:40.048280+00:00",
+        "message": "停止已由主控确认"
+      },
+      {
+        "at": "2026-10-13T03:17:40.750127+00:00",
+        "message": "停止已由主控确认"
+      }
+    ]
+  },
+  "camera": {
+    "running": false,
+    "valid": false,
+    "seq": 2686,
+    "age_ms": 5002172,
+    "fps": 0,
+    "width": 1920,
+    "height": 1080,
+    "resolution": "1920x1080",
+    "requested_fps": 30,
+    "dimensions_verified": true,
+    "device": "HDI Webcam USB",
+    "error": "画面已关闭",
+    "source": "External USB 145F:02EC",
+    "recording": false
+  },
+  "recording": {
+    "active": false,
+    "finishing": false,
+    "id": "20261013-111550-e5699c",
+    "duration_s": 7.4,
+    "frames": 153,
+    "samples": 12,
+    "bytes": 34570078,
+    "dropped_frames": 0,
+    "reason": "用户停止",
+    "error": null,
+    "max_seconds": 600,
+    "max_bytes": 536870912
+  },
+  "diagnostics": {
+    "id": "20261013-110903-c5a0ad",
+    "ok": true,
+    "error": null,
+    "seq": 57710,
+    "segments": 1,
+    "automatic": true
+  },
+  "link_age_ms": 0
+}

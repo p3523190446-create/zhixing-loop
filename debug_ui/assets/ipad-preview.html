@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>知行回路 · iPad Safari 操作预览</title>
+<style>
+:root{color-scheme:dark;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;background:#101719;color:#e8f0ed}
+*{box-sizing:border-box}body{margin:0;min-width:320px}button,select,a{font:inherit}button,select,.direct{min-height:42px;border:1px solid #3d5551;border-radius:10px;background:#22332f;color:#e6f1eb;padding:8px 14px;text-decoration:none;cursor:pointer}button:hover,.direct:hover{background:#30473f}button[aria-pressed=true]{background:#b1ebcc;color:#10291e;border-color:#b1ebcc}button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #a5dffc;outline-offset:3px}
+.toolbar{max-width:1400px;margin:auto;padding:20px 24px 12px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}.title strong{display:block;font-size:21px;font-weight:650;letter-spacing:.5px}.title small{display:block;color:#96aaa3;margin-top:7px;font-size:13px}.actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.primary{background:#b1ebcc;color:#10291e;border-color:#b1ebcc}.tip{max-width:1400px;margin:auto;padding:0 24px;color:#b0c3ba;font-size:13px;line-height:1.7}.tip span{color:#d0eadc}#stage{width:100%;padding:22px 24px 30px;display:flex;justify-content:center;align-items:flex-start;overflow:hidden}.device-holder{position:relative;flex:none}.device{position:absolute;top:0;left:0;padding:17px;border-radius:32px;background:#080b0c;border:1px solid #3d4648;box-shadow:0 24px 70px #0008;transform-origin:top left}.screen{border-radius:17px;overflow:hidden;background:#172020}.statusbar{height:25px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;color:#263530;background:#e2e7e4;font-size:12px;font-weight:600}.safari{height:53px;display:flex;align-items:center;gap:19px;padding:7px 18px;color:#355d86;background:#e2e7e4;border-bottom:1px solid #bac5bf}.chrome-icon{font-size:24px;line-height:1;user-select:none}.address{background:#cdd7d1;flex:1;display:flex;justify-content:center;gap:9px;padding:9px;border-radius:9px;color:#394a43;font-size:14px}.address small{color:#5c7065;font-size:12px}.safari-label{font-size:11px;color:#5b7064}.device iframe{display:block;border:0;background:#111b1c;width:100%}.home-bar{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);background:#d5ded9b0;width:130px;height:5px;border-radius:10px;pointer-events:none}.footnote{color:#81958c;text-align:center;padding:0 16px 24px;font-size:12px}#status{color:#b1ebcc}.error{color:#ffbaab!important}@media(max-width:720px){.toolbar{padding:16px}.tip{padding:0 16px}#stage{padding:16px 10px}.actions{gap:6px}button,select,.direct{padding:8px 10px;font-size:13px}.title strong{font-size:18px}}
+:root{background:#0c1017;color:#e5edf8}button,select,.direct{background:#182637;color:#bed4e7;border-color:#334961}button:hover,.direct:hover{background:#263a50}.primary,button[aria-pressed=true]{background:#87d8e9;color:#112c3a;border-color:#87d8e9}.title small{color:#849bb4}.tip{color:#8ea5bd}.tip span{color:#bbd5e8}#status{color:#91d5e8}.footnote{color:#627f9d}.device{box-shadow:0 24px 70px #0009}
+</style>
+</head>
+<body>
+<header class="toolbar">
+  <div class="title"><strong>iPad Safari · 操作预览</strong><small>先试操作，再按你的手感改布局</small></div>
+  <div class="actions">
+    <select id="size" aria-label="iPad屏幕尺寸"><option value="1194,834">11 英寸 · 1194 × 834</option><option value="1024,768">10.2 英寸 · 1024 × 768</option><option value="1366,1024">12.9 英寸 · 1366 × 1024</option></select>
+    <button id="rotate" type="button" aria-pressed="false">切换竖屏</button>
+    <button id="tryDrive" class="primary" type="button">试用四驱摇杆</button>
+    <a id="direct" class="direct" href="../desktop" target="_blank" rel="noopener">打开完整页面 ↗</a>
+  </div>
+</header>
+<p class="tip">在平板画面里直接点击、拖动或滚动。<span>“试用四驱摇杆”会开启模拟画面与模拟操控，拖动摇杆，松手归零。</span><br><span id="status" role="status">正在载入预览…</span></p>
+<main id="stage" aria-label="iPad Safari预览设备">
+  <div class="device-holder" id="holder"><div class="device" id="device"><div class="screen" id="screen">
+    <div class="statusbar"><span id="clock">9:41</span><span>Wi-Fi　100% ▰</span></div>
+    <div class="safari" aria-label="Safari外观示意"><span class="chrome-icon" aria-hidden="true">‹</span><span class="chrome-icon" aria-hidden="true">›</span><div class="address"><small>局域网</small><span>知行回路 · 调试台</span></div><span class="chrome-icon" aria-hidden="true">↥</span><span class="chrome-icon" aria-hidden="true">＋</span><span class="safari-label">Safari 预览</span></div>
+    <iframe id="app" src="../desktop" title="iPad内的知行回路调试台"></iframe>
+  </div><div class="home-bar"></div></div></div>
+</main>
+<footer class="footnote">浏览器外观为示意，屏幕按 CSS 尺寸缩放。当前是模拟演示；照片与录像下载用于预览操作流程。</footer>
+<script>
+const $=id=>document.getElementById(id),frame=$('app');
+let portrait=false,ready=false;
+function layout(){
+  let [w,h]=$('size').value.split(',').map(Number);if(portrait)[w,h]=[h,w];
+  const outerW=w+34,outerH=h+34,space=$('stage').clientWidth-(innerWidth<720?20:48),scale=Math.min(1,space/outerW);
+  $('device').style.width=outerW+'px';$('device').style.height=outerH+'px';$('screen').style.width=w+'px';$('screen').style.height=h+'px';frame.style.height=(h-78)+'px';
+  $('device').style.transform=`scale(${scale})`;$('holder').style.width=outerW*scale+'px';$('holder').style.height=outerH*scale+'px';
+}
+$('size').addEventListener('change',layout);window.addEventListener('resize',layout);
+$('rotate').addEventListener('click',()=>{portrait=!portrait;$('rotate').setAttribute('aria-pressed',String(portrait));$('rotate').textContent=portrait?'切换横屏':'切换竖屏';layout()});
+frame.addEventListener('load',async()=>{
+  try{
+    const info=await fetch(new URL('../api/ui/info',location.href)).then(r=>r.json());
+    ready=info.demo===true;$('tryDrive').disabled=!ready;
+    $('status').textContent=ready?'模拟预览已就绪，可以试摇杆或拍照录像。':'当前不是模拟服务，仅展示页面。';
+    if(ready){const doc=frame.contentDocument;const camera=doc.getElementById('startCamera');if(camera&&!camera.disabled)camera.click();}
+  }catch(error){$('tryDrive').disabled=true;$('status').textContent='预览未就绪，请重新打开预览入口。';$('status').classList.add('error')}
+});
+$('tryDrive').addEventListener('click',async()=>{
+  if(!ready)return;
+  const info=await fetch(new URL('../api/ui/info',location.href)).then(r=>r.json());if(info.demo!==true)return;
+  const doc=frame.contentDocument,check=doc.getElementById('benchConfirmed'),start=doc.getElementById('startDrive');
+  doc.querySelector('[data-tab="live"]').click();
+  doc.querySelector('[data-control-mode="drive"]').click();
+  doc.getElementById('driveCard').open=true;
+  check.checked=true;check.dispatchEvent(new Event('change',{bubbles:true}));
+  if(!start.disabled)start.click();
+  doc.getElementById('controlDock').scrollTop=0;
+  frame.contentWindow.scrollTo({top:0,behavior:'auto'});
+  $('status').textContent='拖动四驱摇杆试前后和转向；松手归零。也可以滑动上限、点全部停止。';
+});
+layout();
+</script>
+</body>
+</html>
